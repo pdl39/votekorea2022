@@ -6,22 +6,10 @@ const appDir = require('fs').realpathSync(process.cwd());
 
 console.log('Project root directory: ', appDir);
 
-// WEBPACK-DEV-MIDDLEWARE (for development)
-if (process.env.NODE_ENV === 'development') {
-  // This will will only run with 'npm run start:dev2'
-  console.log('WEBPACK-DEV-MIDDLEWARE RUNNING...');
-
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const webpackDevConfig = require(path.resolve(appDir, 'webpack.dev'));
-  const compiler = webpack(webpackDevConfig);
-
-  app.use(webpackDevMiddleware(compiler));
-}
-
 // MIDDLEWARES
 app.use(logger); // logging
 app.use(express.json()); // body-parsing
+app.use(express.urlencoded({ extended: false }));
 
 // ROUTES
 // Add your routes here and uncomment. For example:
@@ -40,13 +28,32 @@ app.get('/', (req, res, next) => {
 
 // STATIC-FILE SERVE
 app.use(express.static(path.resolve(appDir, 'assets')));
-app.use(express.static(path.resolve(appDir, 'src')));
 app.use(express.static(path.resolve(appDir, 'dist')));
+app.use(express.static(path.resolve(appDir, 'src')));
+
+// any remaining requests with an extension (.js, .css, etc.) send 404
+app.use((req, res, next) => {
+	if (path.extname(req.path).length) {
+		const err = new Error('Not found');
+		err.status = 404;
+		next(err);
+	} else {
+		next();
+	}
+});
 
 // FALLBACK HANDLER
 app.get('*', (req, res, next) => {
   try {
-    res.sendFile(path.resolve(appDir, 'src/fallback.html'));
+    const indexHtml = path.resolve(appDir, 'dist/index.html');
+    const fallbackHtml = path.resolve(appDir, 'src/fallback.html');
+
+    if (indexHtmlPath) {
+      res.sendFile(indexHtml);
+    }
+    else {
+      res.sendFile(fallbackHtml);
+    }
   }
   catch (err) {
     next(err);

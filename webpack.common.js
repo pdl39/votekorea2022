@@ -6,7 +6,7 @@ const pk = require(path.resolve(appDir, 'package.json'));
 
 module.exports = {
   entry: {
-    main: [path.resolve(appDir, pk.main)]
+    main: path.resolve(appDir, pk.main),
   },
   resolve: {
     mainFields: ['browser', 'module', 'main'],
@@ -24,7 +24,7 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               presets: [
-                '@babel/preset-env'
+                '@babel/preset-react'
               ]
             }
           }
@@ -49,6 +49,7 @@ module.exports = {
       },
       {
         test: /\.html$/i,
+        exclude: /node_modules/,
         use: ["html-loader"]
       }
     ]

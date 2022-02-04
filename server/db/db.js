@@ -1,7 +1,5 @@
-/* --- SAMPLE DB SETUP CODE (Below exmple uses Postgres database with Sequelize) ---
-
 const path = require('path');
-const DB = require('sequelize');
+const Sequelize = require('sequelize');
 const appDir = require('fs').realpathSync(process.cwd());
 const pk = require(path.resolve(appDir, 'package.json'));
 
@@ -24,9 +22,6 @@ if(process.env.DATABASE_URL){
   };
 }
 
-const db = new DB(dbUrl, config);
+const db = new Sequelize(dbUrl, config);
 
 module.exports = db
-
-
-*/
