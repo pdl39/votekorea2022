@@ -1,9 +1,8 @@
 const path = require('path');
 const Sequelize = require('sequelize');
 const appDir = require('fs').realpathSync(process.cwd());
-const pk = require(path.resolve(appDir, 'package.json'));
 
-const dbName = pk.name + (process.env.NODE_ENV === 'test' ? '-test' : '');
+const dbName = process.env.DB_NAME || 'votekorea2022';
 const dbUrl = process.env.DATABASE_URL || `postgres://localhost:5432/${dbName}`;
 
 const config = {
@@ -24,4 +23,4 @@ if(process.env.DATABASE_URL){
 
 const db = new Sequelize(dbUrl, config);
 
-module.exports = db
+module.exports = db;
