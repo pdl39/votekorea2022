@@ -27,7 +27,6 @@ app.get('/', (req, res, next) => {
 });
 
 // STATIC-FILE SERVE
-app.use(express.static(path.resolve(appDir, 'assets')));
 app.use(express.static(path.resolve(appDir, 'dist')));
 app.use(express.static(path.resolve(appDir, 'src')));
 
