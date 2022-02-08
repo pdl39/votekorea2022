@@ -2,20 +2,23 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const User = db.define('user', {
+  uniqueIdFromKakao: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   email: {
     type: Sequelize.STRING,
 		unique: true,
-		allowNull: false,
 		validator: {
-      isEmail: true,
-		},
+      isEmail: true
+		}
 	},
   userSince: {
     type: Sequelize.DATE,
-    allowNull: false,
+    allowNull: false
   },
   nickname: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING
   },
   accountType: {
     type: Sequelize.ENUM('free', 'premium')

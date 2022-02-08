@@ -13,6 +13,9 @@ const Item = db.define('item', {
   bgColor: {
     type: Sequelize.STRING,
   },
+  itemOrder: {
+    type: Sequelize.INTEGER
+  }
 });
 
 module.exports = Item;

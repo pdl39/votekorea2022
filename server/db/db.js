@@ -1,6 +1,4 @@
-const path = require('path');
 const Sequelize = require('sequelize');
-const appDir = require('fs').realpathSync(process.cwd());
 
 const dbName = process.env.DB_NAME || 'votekorea2022';
 const dbUrl = process.env.DATABASE_URL || `postgres://localhost:5432/${dbName}`;
