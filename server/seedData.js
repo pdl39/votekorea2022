@@ -1,8 +1,8 @@
 const users = [
   {
+    uniqueIdFromKakao: '00000',
     email: 'xxx@xxx.com',
     userSince: '2022-02-02',
-    nickname: 'angryljm',
     accountType: 'free'
   }
 ];
@@ -25,32 +25,44 @@ const posts = [
 const items = [
   {
     name: '이재명',
-    imageUrl: '',
+    imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ljm.png',
     bgColor: 'blue',
+    itemOrder: 1,
     postId: 1
   },
   {
     name: '윤석열',
-    imageUrl: '',
+    imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ysy.png',
     bgColor: 'red',
+    itemOrder: 2,
     postId: 1
   },
   {
     name: '안철수',
-    imageUrl: '',
+    imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/acs.png',
     bgColor: 'orange',
+    itemOrder: 3,
     postId: 1
   },
   {
     name: '심상정',
-    imageUrl: '',
+    imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ssj.png',
     bgColor: 'yellow',
+    itemOrder: 4,
+    postId: 1
+  },
+  {
+    name: '김동연',
+    imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/kdy.png',
+    bgColor: 'grey',
+    itemOrder: 5,
     postId: 1
   },
   {
     name: '허경영',
-    imageUrl: '/assets/images/hky.png',
+    imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/hky.png',
     bgColor: 'grey',
+    itemOrder: 6,
     postId: 1
   },
 ];

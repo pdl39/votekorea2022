@@ -63,14 +63,14 @@ const seed = async () => {
     // CREATE ASSOCIATIONS
 		//category-post associations
 		try {
-			await categoryInstances[0].setPost(postInstances[0]);
+			await categoryInstances[0].setPosts([postInstances[0]]);
 		} catch (err) {
 			console.log(err);
 		}
 		//post-item associations
 		try {
       const post1Items = [];
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 6; i++) {
         post1Items.push(itemInstances[i]);
       };
 
