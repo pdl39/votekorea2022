@@ -12,6 +12,7 @@ module.exports = merge(common, {
     static: {
       directory: path.resolve(appDir, 'src'),
     },
+    historyApiFallback: true,
     hot: true,
     compress: true,
     host: 'localhost',
