@@ -1,5 +1,7 @@
 div.routes-container {
+  height: 85%;
+  top: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
+  overflow: auto;
 }

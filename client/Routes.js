@@ -27,6 +27,12 @@ const Routes = () => {
         <Route exact path="/">
           <Home />
         </Route>
+        <Route exact path="/kakaologin">
+          <KakaoLogin isOpen={true} />
+        </Route>
+        <Route exact path="/serviceagreement">
+          <Home />
+        </Route>
         <Route path="/posts/:id">
           <Post />
         </Route>
