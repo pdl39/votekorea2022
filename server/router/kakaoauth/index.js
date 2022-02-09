@@ -1,6 +1,5 @@
 const router = require('express').Router();
-const { newErr, runCommand } = require('../../utils/newErr');
-const runCommand = require('../../utils/runCommand');
+const { newErr, runCommand } = require('../../utils');
 const { REDIRECT_URI, CLIENT_ID } = process.env;
 const kauthUrl = 'https://kauth.kakao.com/oauth/token';
 const kapiUrl = 'https://kapi.kakao.com/v2/user/me';
