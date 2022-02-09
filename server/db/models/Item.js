@@ -14,7 +14,13 @@ const Item = db.define('item', {
     type: Sequelize.STRING,
   },
   itemOrder: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    unique: true,
+    allowNull: false
+  },
+  isValid: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
   }
 });
 
