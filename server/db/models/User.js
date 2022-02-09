@@ -4,6 +4,12 @@ const db = require('../db');
 const User = db.define('user', {
   kakaoUuid: {
     type: Sequelize.INTEGER,
+    unique: true,
+    allowNull: false
+  },
+  phoneNumber: {
+    type: Sequelize.STRING,
+    unique: true,
     allowNull: false
   },
   email: {
@@ -13,15 +19,12 @@ const User = db.define('user', {
       isEmail: true
 		}
 	},
-  userSince: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
   nickname: {
     type: Sequelize.STRING
   },
   accountType: {
-    type: Sequelize.ENUM('free', 'premium')
+    type: Sequelize.ENUM('free', 'premium'),
+    defaultValue: 'free'
   }
 });
 
