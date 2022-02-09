@@ -1,8 +1,9 @@
 const users = [
   {
-    kakaoUuid: '00000',
+    kakaoUuid: '0000000000',
+    phoneNumber: '+82 10-0000-0000',
     email: 'xxx@xxx.com',
-    userSince: '2022-02-02',
+    nickname: 'angryChoco',
     accountType: 'free'
   }
 ];
