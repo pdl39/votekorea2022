@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 // ROUTES
 // Add your routes here and uncomment. For example:
 app.use('/api', require('./router/api'));
+app.use('/kakaoauth', require('./router/kakaoauth'));
 // ...
 // */
 
