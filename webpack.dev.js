@@ -26,6 +26,10 @@ module.exports = merge(common, {
       '/api/': {
         target: `http://localhost:${expressServerPORT}`,
         secure: false
+      },
+      '/kakaoauth/': {
+        target: `http://localhost:${expressServerPORT}`,
+        secure: false
       }
     },
   },
