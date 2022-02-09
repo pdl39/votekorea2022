@@ -1,6 +1,6 @@
 const users = [
   {
-    uniqueIdFromKakao: '00000',
+    kakaoUuid: '00000',
     email: 'xxx@xxx.com',
     userSince: '2022-02-02',
     accountType: 'free'
@@ -28,6 +28,7 @@ const items = [
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ljm.png',
     bgColor: 'blue',
     itemOrder: 1,
+    isValid: true,
     postId: 1
   },
   {
@@ -35,6 +36,7 @@ const items = [
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ysy.png',
     bgColor: 'red',
     itemOrder: 2,
+    isValid: true,
     postId: 1
   },
   {
@@ -42,6 +44,7 @@ const items = [
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/acs.png',
     bgColor: 'orange',
     itemOrder: 3,
+    isValid: true,
     postId: 1
   },
   {
@@ -49,6 +52,7 @@ const items = [
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ssj.png',
     bgColor: 'yellow',
     itemOrder: 4,
+    isValid: true,
     postId: 1
   },
   {
@@ -56,6 +60,7 @@ const items = [
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/kdy.png',
     bgColor: 'grey',
     itemOrder: 5,
+    isValid: true,
     postId: 1
   },
   {
@@ -63,6 +68,7 @@ const items = [
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/hky.png',
     bgColor: 'grey',
     itemOrder: 6,
+    isValid: true,
     postId: 1
   },
 ];
