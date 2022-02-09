@@ -3,12 +3,14 @@ import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import kakaoAuth from './kakaoAuth';
+import user from './user';
 import post from './post';
 import items from './items';
 
 // const reducer = combineReducers({ auth })
 const reducer = combineReducers({
 	kakaoAuth,
+	user,
 	post,
 	items,
 });
@@ -17,6 +19,7 @@ const middlewares = [
 	thunkMiddleware,
 ];
 
+console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV !== 'production') {
 	middlewares.push(createLogger({ collapsed: true }));
 }
@@ -27,6 +30,3 @@ const store = createStore(
 );
 
 export default store;
-
-// export * from './kakaoAuth';
-// export * from './items';
