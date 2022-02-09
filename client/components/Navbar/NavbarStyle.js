@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		padding: '0.8em',
+		padding: '0.5rem',
 		height: '65px',
 		boxShadow: '0 4px 2px -2px rgba(0,0,0,.2)',
 	},
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
 	logo: {
 		height: '45px',
-    width: '100%'
+    width: '100%',
 	},
 
 	menuButtonAndUerVerified: {
