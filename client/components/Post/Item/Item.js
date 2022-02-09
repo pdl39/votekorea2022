@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './ItemStyle';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Divider } from '@material-ui/core';
 
 const Item = (props) => {
 	const classes = useStyles();
-	const history = useHistory();
 	const dispatch = useDispatch();
 
-  const [isSelected, setIsSelected] = useState(false);
-
   const {
-    item
+    item,
+    isSelected
   } = props;
 
 	return (
-      <div variant="outlined" className={isSelected ? classes.itemSelected : classes.item} onClick={() => setIsSelected(true)}>
+      <div variant="outlined" className={isSelected ? classes.itemSelected : classes.item}>
         {
           item.imageUrl.length &&
           <div className={classes.imageContainer}>

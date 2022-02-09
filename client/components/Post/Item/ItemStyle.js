@@ -5,8 +5,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    // height: '130px',
-    // minHeight: '7rem',
     width: '100px',
     margin: '11px',
     backgroundColor: theme.palette.secondary.light,
@@ -17,7 +15,11 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     borderRadius: '10px',
     overflow: 'hidden',
-    border: `1px solid ${theme.palette.secondary.light}`
+    border: `1px solid ${theme.palette.secondary.light}`,
+    boxShadow: `5px 5px 10px ${theme.palette.secondary.main}`,
+    [theme.breakpoints.down('300')]: {
+      width: '80px'
+    }
   },
   itemSelected: {
     display: 'flex',
@@ -28,7 +30,8 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     borderRadius: '10px',
     overflow: 'hidden',
-    border: `2px solid ${theme.palette.secondary.white}`,
+    border: `3px solid ${theme.palette.secondary.white}`,
+    boxShadow: `5px 5px 10px ${theme.palette.secondary.main}`
   },
   selectedItemCheck: {
     position: 'absolute',
