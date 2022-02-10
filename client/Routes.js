@@ -10,39 +10,53 @@ import './Routes.css';
 
 const Routes = () => {
   const dispatch = useDispatch();
-  // const auth = useSelector(state => state.auth);
+  const auth = useSelector(state => state.kakaoAuth);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log(isLoggedIn);
 
-  // useEffect(async () => {
-	// 	dispatch(me());
-	// }, []);
-
-	// useEffect(async () => {
-	// 	setIsLoggedIn(!!auth.id);
-	// }, [auth]);
+  useEffect(() => {
+    setIsLoggedIn(!!auth.user?.id);
+  }, [auth]);
 
 	return (
     <div className="routes-container">
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route exact path="/kakaologin">
-          <KakaoLogin isOpen={true} />
-        </Route>
-        <Route exact path="/serviceagreement">
-          <Home />
-        </Route>
-        <Route path="/posts/:id">
-          <Post />
-        </Route>
-        <Route path="/results/:id">
-          <Result />
-        </Route>
-        <Route>
-          <Fallback />
-        </Route>
-      </Switch>
+      {
+        !isLoggedIn
+        ? <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/kakaologin">
+            <KakaoLogin isOpen={true} />
+          </Route>
+          <Route exact path="/serviceagreement">
+            <Home />
+          </Route>
+          <Route exact path="/posts/:id">
+            <Post />
+          </Route>
+          <Route>
+            <Fallback />
+          </Route>
+        </Switch>
+        : <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/kakaologin">
+            <Redirect to="/" />
+          </Route>
+          <Route exact path="/posts/:id">
+            <Post />
+          </Route>
+          <Route exact path="/results/:id">
+            <Result />
+          </Route>
+          <Route>
+            <Fallback />
+          </Route>
+        </Switch>
+      }
     </div>
 	);
 };
