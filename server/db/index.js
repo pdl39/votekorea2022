@@ -12,10 +12,10 @@ Post.belongsTo(Category);
 Post.hasMany(Item);
 Item.belongsTo(Post);
 
-User.belongsToMany(Item, {
+User.belongsToMany(Post, {
   through: Choice
 });
-Item.belongsToMany(User, {
+Post.belongsToMany(User, {
   through: Choice
 });
 
