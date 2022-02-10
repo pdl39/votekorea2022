@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getKakaoToken } from '../../store/kakaoAuth';
-import { fetchPost } from '../../store/post';
 import Post from '../Post/Post';
 import Result from '../Result/Result';
 
@@ -11,7 +10,6 @@ const defaultPostId = 1;
 const Home = () => {
   const authCode = window.localStorage.getItem('kakaoAuthCode');
 
-  const post = useSelector(state => state.post);
   const auth = useSelector(state => state.kakaoAuth);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -19,6 +17,8 @@ const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(isLoggedIn);
 
+  // If auth code received from kakao redirect, get access token, register the user, and log the user in.
+  // If successful, the auth (state.kakaoAuth) will contain tokens and user objects.
   useEffect(() => {
     if (authCode) {
       loginUser();
@@ -26,39 +26,42 @@ const Home = () => {
   }, [authCode]);
 
   useEffect(() => {
-    setIsLoggedIn(!!auth?.user?.id);
-  }, [auth?.user?.id]);
+    if (auth?.err) {
+      handleLoginError();
+    }
+  }, [auth])
 
   useEffect(() => {
-    console.log('call fetchPost dispatch')
-    dispatch(fetchPost(defaultPostId));
-  }, []);
+    setIsLoggedIn(!!auth.user?.id);
+  }, [auth.user?.id]);
 
   const loginUser = async () => {
-    try {
-      const result = await dispatch(getKakaoToken(authCode));
-      console.log(result);
-      if (result.err) {
-        if (result.err.response.data.status === 403) {
-          throw new Error('로그인을 위해 대한민국에서 개통한 휴대폰 정보가 필수입니다.');
-        }
-        throw new Error('카카오 로그인 중 문제가 발생했습니다. 다시 시도해주세요.');
-      }
-    }
-    catch (err) {
-      console.log({err});
-      window.alert(err);
-      history.push({
-        pathname: '/kakaologin',
-        state: {isOpen: true}
-      })
-    }
-  }
+      await dispatch(getKakaoToken(authCode));
+  };
 
+  const handleLoginError = () => {
+    console.log(auth.err.response);
+    const errorStatus = auth.err.response.status;
+    const errorStatusText = auth.err.response.statusText;
+    const errorMessage = auth.err.response.data;
+    const fullErrorMessage = `[Login Error] ${errorStatus} ${errorStatusText}: ${errorMessage}`;
+    if (errorStatus >= 500) {
+      const alertMessage = `${fullErrorMessage} \n로그인 중 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.`
+      window.alert(alertMessage);
+    }
+    else if (errorStatus >= 400) {
+      const alertMessage = `${fullErrorMessage} \n로그인 실패. 다음 사항들을 확인 후 다시 로그인을 시도해주세요: \n(1) 카카오계정과 연동이 만료되면 재로그인 해야합니다. \n(2) 대한민국 휴대폰 번호가 카카오계정에 연동되어 있어야 합니다.`
+      window.alert(alertMessage)
+    }
+    history.push({
+      pathname: '/kakaologin',
+      state: {isOpen: true}
+    });
+  };
 
   return (
     !isLoggedIn
-    ? (<Post post={post}/>)
+    ? (<Post postId={defaultPostId}/>)
     : (<Result />)
   );
 };
