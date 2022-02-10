@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { newErr, runCommand } = require('../../utils');
 const registerUser = require('./registerUser');
-const { REDIRECT_URI, CLIENT_ID } = process.env;
+const { REDIRECT_URI, CLIENT_ID, CLIENT_SECRET } = process.env;
 const kauthUrl = 'https://kauth.kakao.com/oauth/token';
 const kapiUrl = 'https://kapi.kakao.com/v2/user/me';
 
@@ -13,6 +13,7 @@ router.post('/login', async (req, res, next) => {
 		-H "Content-Type: application/x-www-form-urlencoded" \
 		-d "grant_type=authorization_code" \
 		-d "client_id=${CLIENT_ID}" \
+		-d "client_secret=${CLIENT_SECRET}" \
 		--data-urlencode "redirect_uri=${REDIRECT_URI}" \
 		-d "code=${req.body.code}"`);
 		console.log('BODY: ', kakaoTokens);
@@ -20,10 +21,10 @@ router.post('/login', async (req, res, next) => {
 		const parsedKakaoTokens = JSON.parse(kakaoTokens);
 
 		if (!kakaoTokens.length) {
-			throw newErr(400, 'POST request error');
+			throw newErr(500, 'Kakao Account request error');
 		}
 		if (parsedKakaoTokens.error) {
-			throw newErr(400, parsedKakaoTokens.error);
+			throw newErr(parsedKakaoTokens.error.statusCode, parsedKakaoTokens.error);
 		}
 		// USE ACCESS_TOKEN TO REGISTER USER (IF DOESN'T EXIT) & RETURN TOKEN & USER DATA
 		if (parsedKakaoTokens.access_token) {
