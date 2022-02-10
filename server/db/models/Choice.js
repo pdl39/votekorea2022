@@ -2,8 +2,8 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const Choice = db.define('choice', {
-  chosen: {
-    type: Sequelize.BOOLEAN,
+  chosenItemId: {
+    type: Sequelize.INTEGER,
     defaultValue: false
   }
 });
