@@ -20,7 +20,7 @@ const Item = (props) => {
             {
               isSelected &&
               <div className={classes.selectedItemCheck}>
-                <img src="https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/logo/check-icon-aqua.png" alt="selected item check" className={classes.image} />
+                <img src="/assets/logo/check-icon-aqua.png" alt="selected item check" className={classes.image} />
               </div>
             }
             <img src={item.imageUrl} className={classes.image} alt="item image"/>
