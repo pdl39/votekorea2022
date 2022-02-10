@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTheme } from '@material-ui/core/styles';
+import { fetchPost } from '../../store/post';
 import { fetchItems } from '../../store/items';
 import useStyles from './PostStyle';
 import Item from './Item/Item';
@@ -10,25 +10,37 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const Post = (props) => {
-	const theme = useTheme();
 	const classes = useStyles();
 	const history = useHistory();
-	const postId = parseInt(useParams().id, 10);
-	// const user = useSelector(state => state.auth);
+	const postId = props.postId || parseInt(useParams().id, 10);
+	const post = useSelector(state => state.post);
 	const items = useSelector(state => state.items);
 	const dispatch = useDispatch();
 
-	const {
-		post
-	} = props;
-
+	const [isFetchPostCalled, setIsFetchPostCalled] = useState(false);
 	const [selectedItemId, setSelectedItemId] = useState(null);
 
+	// Handle fallback routes
 	useEffect(() => {
-		if (post.id) {
-			dispatch(fetchItems(post.id));
+		if (isFetchPostCalled && postId && (post?.id !== postId)) {
+			history.push(`/posts/${postId}/page-not-found`);
 		}
-	}, [post.id]);
+	}, [isFetchPostCalled]);
+
+	// Fetch post
+	useEffect(async () => {
+    if (postId) {
+			await dispatch(fetchPost(postId));
+			setIsFetchPostCalled(true);
+		}
+  }, [postId]);
+
+	// Fetch post items
+	useEffect(() => {
+		if (postId) {
+			dispatch(fetchItems(postId));
+		}
+	}, [postId]);
 
 	const handleSubmitChoice = (selectedItemId) => {
 		if (selectedItemId === null) {
