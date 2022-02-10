@@ -48,7 +48,8 @@ export const getKakaoToken = authCode => {
 		}
 		catch (err) {
 			console.log(err);
-			return { err };
+			window.localStorage.removeItem('kakaoAuthCode');
+			return dispatch(setKakaoToken({ err }));
 		}
 	};
 };
