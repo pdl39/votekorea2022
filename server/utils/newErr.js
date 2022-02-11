@@ -1,6 +1,8 @@
-const newErr = (statusCode, message = statusCode) => {
+const newErr = (message = 'error', statusCode = null) => {
   const err = new Error(message);
-  err.status = statusCode;
+  if (statusCode) {
+    err.status = statusCode;
+  }
   return err;
 }
 

@@ -3,9 +3,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const app = require('./app');
+const { db } = require('./db');
 const HOST = process.env.HOST ?? '127.0.0.1';
 const PORT = process.env.PORT ?? 8085;
-const { db } = require('./db');
 
 const startServer = async () => {
   // START EXPRESS SERVER

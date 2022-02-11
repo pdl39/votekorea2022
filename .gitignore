@@ -20,7 +20,6 @@ node_modules
 # repeat this process until you reach and un-ignore the desired file/folder. The key is that you can only un-ignore the direct child.
 # directly un-ignoring the whole path to the desired file/folder will not work (e.g. !/assets/favicon/favicon.ico)
 # ***********************************************************
-/assets/*
-!/assets/favicon/
-/assets/favicon/*
-!/assets/favicon/favicon.ico
+
+#TEMPORARY IGNORE FOR SECURITY REASONS
+/client/components/KakaoLogin/KakaoLoginInfo.js

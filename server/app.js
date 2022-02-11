@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 // ROUTES
 // Add your routes here and uncomment. For example:
 app.use('/api', require('./router/api'));
+app.use('/kakaoauth', require('./router/kakaoauth'));
 // ...
 // */
 
@@ -27,8 +28,8 @@ app.get('/', (req, res, next) => {
 });
 
 // STATIC-FILE SERVE
-app.use(express.static(path.resolve(appDir, 'assets')));
 app.use(express.static(path.resolve(appDir, 'dist')));
+app.use(express.static('https://votekorea2022-storage.s3.us-east-2.amazonaws.com/'));
 app.use(express.static(path.resolve(appDir, 'src')));
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
@@ -62,7 +63,6 @@ app.get('*', (req, res, next) => {
 
 // ERROR HANDLER
 app.use((err, req, res, next) => {
-  console.log(err);
   console.log(err.stack);
   res.status(err.status ?? 500).send(err.message ?? 'Internal server error.');
 });

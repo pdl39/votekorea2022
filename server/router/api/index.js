@@ -1,10 +1,10 @@
 const router = require('express').Router();
 module.exports = router;
 
-/* Add route middlewares below. For example:
-router.use('/user', require('./routes/user'));
-...
-*/
+// Route Middlewares
+router.use('/items', require('./items'));
+router.use('/posts', require('./posts'));
+router.use('/choices', require('./choices'));
 
 // ERROR HANDLER
 router.use((req, res, next) => {

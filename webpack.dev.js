@@ -9,7 +9,10 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: path.resolve(appDir, 'src'),
+    static: {
+      directory: path.resolve(appDir, 'src'),
+    },
+    historyApiFallback: true,
     hot: true,
     compress: true,
     host: 'localhost',
@@ -23,9 +26,12 @@ module.exports = merge(common, {
       '/api/': {
         target: `http://localhost:${expressServerPORT}`,
         secure: false
+      },
+      '/kakaoauth/': {
+        target: `http://localhost:${expressServerPORT}`,
+        secure: false
       }
     },
-    publicPath: '/',
   },
   output: {
     path: path.resolve(appDir, 'dist'),
