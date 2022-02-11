@@ -14,6 +14,11 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     fontSize: '10px'
   },
+  cancel: {
+    textAlign: 'center',
+    fontSize: '11px',
+    marginTop: '10px'
+  },
 	kakaoLoginButton: {
     width: '200px',
     minWidth: '150px',

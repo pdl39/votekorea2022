@@ -40,6 +40,9 @@ const KakaoLogin = (props) => {
 								<img src="https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/third-party-assets/kakao_login_medium_narrow.png" alt="kakao login" className={classes.kakaoLoginImage} />
 						</div>
 					</a>
+					<DialogContentText id="alert-dialog-description" className={classes.cancel}>
+						<Link to="/">취소</Link>
+					</DialogContentText>
 				</DialogContent>
 			</Dialog>
 		</div>
