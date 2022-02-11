@@ -17,7 +17,6 @@ const categories = [
 
 const posts = [
   {
-    postedDate: Date.now(),
     title: '당신의 선택은?',
     categoryId: 1
   }
