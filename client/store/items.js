@@ -13,11 +13,17 @@ const _fetchItems = items => {
 
 // Thunks
 export const fetchItems = postId => {
-  return async dispatch => {
-    const { data: items } = await axios.get(`/api/items/${postId}`);
-    dispatch(_fetchItems(items));
-    return items;
-  };
+  try {
+    return async dispatch => {
+      const { data: items } = await axios.get(`/api/items/${postId}`);
+      dispatch(_fetchItems(items));
+      return items;
+    };
+  }
+  catch(err) {
+    dispatch(_fetchItems({ err }));
+    return { err };
+  }
 };
 
 // Reducer export
