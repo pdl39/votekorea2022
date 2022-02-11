@@ -31,6 +31,7 @@ const Post = (props) => {
 
 	const [isFetchPostCalled, setIsFetchPostCalled] = useState(false);
 	const [selectedItemId, setSelectedItemId] = useState(null);
+	const [selectedItemName, setSelectedItemName] = useState(null);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	// AUTHENTICATE USER on component mount
@@ -77,16 +78,16 @@ const Post = (props) => {
 	}, [auth, postId]);
 
 	// Submit user's choice made before logging in (stored in local storage) after loggin in.
-	useEffect(async () => {
-		if (isLoggedIn && preChoicePostId && preChoiceItemId) {
-			const result = await dispatch(submitChoice(auth.user.id, preChoicePostId, preChoiceItemId));
-			console.log(result);
-			if (result.err && result.err.response.data === 'choice_exists') {
-				await window.alert(`선택은 한 번만 할 수 있어요! \n다시 선택 하려면 "선택 바꾸기"를 클릭하세요!`);
-			}
-			history.push(`/results/${preChoicePostId}`);
-		}
-	}, [auth, preChoicePostId, preChoiceItemId]);
+	// useEffect(async () => {
+	// 	if (isLoggedIn && preChoicePostId && preChoiceItemId) {
+	// 		const result = await dispatch(submitChoice(auth.user.id, preChoicePostId, preChoiceItemId));
+	// 		console.log(result);
+	// 		if (result.err && result.err.response.data === 'choice_exists') {
+	// 			await window.alert(`선택은 한 번만 할 수 있어요! \n다시 선택 하려면 "선택 바꾸기"를 클릭하세요!`);
+	// 		}
+	// 		history.push(`/results/${preChoicePostId}`);
+	// 	}
+	// }, [auth, preChoicePostId, preChoiceItemId]);
 
 	const handleSubmitChoice = async (selectedItemId) => {
 		if (selectedItemId === null) {
@@ -95,12 +96,15 @@ const Post = (props) => {
 		}
 
 		if (isLoggedIn) {
-			console.log(auth);
-			console.log(auth.user);
-			console.log(auth.user.id);
 			const result = await dispatch(fetchChoice(auth.user.id, postId));
-			if (result.choice) {
-				await window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "선택 바꾸기"를 클릭하세요!`);
+			console.log({result});
+			if (result.id) {
+				window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "선택 바꾸기"를 클릭하세요!`);
+				history.push(`/results/${postId}`);
+			}
+			else {
+				await dispatch(submitChoice(auth.user.id, postId, selectedItemId));
+				window.alert(`내 선택: \n${selectedItemName}!`);
 				history.push(`/results/${postId}`);
 			}
 		}
@@ -110,10 +114,22 @@ const Post = (props) => {
 			history.push({
 				pathname: '/kakaologin',
 				state: {
-					postId,
-					selectedItemId
+					isOpen: true,
+					postId: postId,
+					selectedItemId: selectedItemId
 				}
 			});
+		}
+	}
+
+	const toggleSelection = (itemId, itemName) => {
+		if (selectedItemId === itemId) {
+			setSelectedItemId(null);
+			setSelectedItemName(null);
+		}
+		else {
+			setSelectedItemId(itemId);
+			setSelectedItemName(itemName);
 		}
 	}
 
@@ -128,7 +144,7 @@ const Post = (props) => {
 				<div className={classes.itemsContainer}>
 					{
 						items.map((item) => (
-							<div key={item.id} onClick={() => setSelectedItemId(item.id)}>
+							<div key={item.id} onClick={() => toggleSelection(item.id, item.name)}>
 								<Item item={item} isSelected={item.id === selectedItemId} />
 							</div>
 						))
