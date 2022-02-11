@@ -5,12 +5,28 @@ const PRECHOICE_POST_ID = 'preChoicePostId';
 const PRECHOICE_ITEM_ID = 'preChoiceItemId';
 
 // Action Types
-const SET_CHOICE = 'SET_CHOICE';
+const FETCH_CHOICE = 'FETCH_CHOICE';
+const SUBMIT_CHOICE = 'SUBMIT_CHOICE';
+const REMOVE_CHOICE = 'REMOVE_CHOICE';
 
 // Action Creators
-const _setChoice = choice => {
+const _fetchChoice = choice => {
   return {
-    type: SET_CHOICE,
+    type: FETCH_CHOICE,
+    choice
+  };
+};
+
+const _submitChoice = choice => {
+  return {
+    type: FETCH_CHOICE,
+    choice
+  };
+};
+
+const _removeChoice = choice => {
+  return {
+    type: FETCH_CHOICE,
     choice
   };
 };
@@ -21,11 +37,12 @@ export const fetchChoice = (userId, postId) => {
     console.log('inside fetchChoice dispatch. userId: ', userId);
     try {
       const { data: choice } = await axios.get(`/api/choices/?userId=${userId}&postId=${postId}`);
-      dispatch(_setChoice(choice));
+
+      dispatch(_fetchChoice(choice));
       return choice;
     }
     catch(err) {
-      dispatch(_setChoice({ err }));
+      dispatch(_fetchChoice({ err }));
       return { err };
     }
   };
@@ -44,11 +61,11 @@ export const submitChoice = (userId, postId, itemId) => {
       window.localStorage.removeItem(PRECHOICE_POST_ID);
       window.localStorage.removeItem(PRECHOICE_ITEM_ID);
 
-      dispatch(_setChoice(choice));
+      dispatch(_submitChoice(choice));
       return choice;
     }
     catch(err) {
-      dispatch(_setChoice({ err }));
+      dispatch(_submitChoice({ err }));
       return { err };
     }
   };
@@ -64,11 +81,11 @@ export const removeChoice = (userId, postId) => {
       window.localStorage.removeItem(PRECHOICE_POST_ID);
       window.localStorage.removeItem(PRECHOICE_ITEM_ID);
 
-      dispatch(_setChoice({}));
+      dispatch(_removeChoice({}));
       return data;
     }
     catch(err) {
-      dispatch(_setChoice({ err }));
+      dispatch(_removeChoice({ err }));
       return { err };
     }
   };
@@ -77,7 +94,11 @@ export const removeChoice = (userId, postId) => {
 // Reducer export
 export default function (state = {}, action) {
   switch (action.type) {
-    case SET_CHOICE:
+    case FETCH_CHOICE:
+      return action.choice;
+    case SUBMIT_CHOICE:
+      return action.choice;
+    case REMOVE_CHOICE:
       return action.choice;
     default:
       return state;
