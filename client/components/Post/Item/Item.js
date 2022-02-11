@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import useStyles from './ItemStyle';
 import Typography from '@material-ui/core/Typography';
 
 const Item = (props) => {
 	const classes = useStyles();
-	const dispatch = useDispatch();
 
   const {
     item,
@@ -13,7 +11,7 @@ const Item = (props) => {
   } = props;
 
 	return (
-      <div variant="outlined" className={isSelected ? classes.itemSelected : classes.item}>
+    <div className={isSelected ? classes.itemSelected : classes.item}>
         {
           item.imageUrl.length &&
           <div className={classes.imageContainer}>
@@ -32,7 +30,7 @@ const Item = (props) => {
           </Typography>
         </div>
       </div>
-	);
+  );
 };
 
 export default Item;

@@ -6,6 +6,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100px',
+    height: '150px',
     margin: '11px',
     backgroundColor: theme.palette.secondary.light,
     transition: 'border 0.5s',
@@ -26,12 +27,16 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100px',
+    height: '150px',
     margin: '11px',
     cursor: 'pointer',
     borderRadius: '10px',
     overflow: 'hidden',
     border: `3px solid ${theme.palette.secondary.white}`,
-    boxShadow: `5px 5px 10px ${theme.palette.secondary.main}`
+    boxShadow: `5px 5px 10px ${theme.palette.secondary.main}`,
+    [theme.breakpoints.down('300')]: {
+      width: '80px'
+    }
   },
   selectedItemCheck: {
     position: 'absolute',
@@ -41,7 +46,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   imageContainer: {
-    padding: '5px',
     borderRadius: '10px',
     display: 'flex',
     justifyContent: 'center',
@@ -51,7 +55,8 @@ const useStyles = makeStyles(theme => ({
   },
   image: {
     top: '0',
-    width: '100%'
+    padding: '5px',
+    width: '95%'
   },
   nameContainer: {
     padding: '0',
