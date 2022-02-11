@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getKakaoToken } from '../../store/kakaoAuth';
+import { getKakaoToken, authenticate } from '../../store/kakaoAuth';
 import Post from '../Post/Post';
 import Result from '../Result/Result';
 
@@ -11,10 +11,26 @@ const Home = () => {
   const authCode = window.localStorage.getItem('kakaoAuthCode');
 
   const auth = useSelector(state => state.kakaoAuth);
+  const choice = useSelector(state => state.choice);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	// AUTHENTICATE USER on component mount
+	useEffect(async () => {
+		const result = await dispatch(authenticate());
+		console.log('authentication dispatch was run');
+		if (result && result.user.id) {
+			setIsLoggedIn(true);
+		}
+	}, []);
+
+  	// UNMOUNT HANDLER.
+	useEffect(() => {
+		return () => {};
+	}, []);
+
   console.log(isLoggedIn);
 
   // If auth code received from kakao redirect, get access token, register the user, and log the user in.
@@ -29,11 +45,7 @@ const Home = () => {
     if (auth?.err) {
       handleLoginError();
     }
-  }, [auth])
-
-  useEffect(() => {
-    setIsLoggedIn(!!auth.user?.id);
-  }, [auth.user?.id]);
+  }, [auth]);
 
   const loginUser = async () => {
       await dispatch(getKakaoToken(authCode));
@@ -59,10 +71,9 @@ const Home = () => {
     });
   };
 
+
   return (
-    !isLoggedIn
-    ? (<Post postId={defaultPostId}/>)
-    : (<Result />)
+    <Post postId={defaultPostId} />
   );
 };
 
