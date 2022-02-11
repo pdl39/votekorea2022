@@ -13,9 +13,9 @@ const darkTheme = createTheme({
 		mode: 'dark',
 		primary: {
 			light: '#6c8a81',
-			mid: '#234B42',
 			main: '#406056',
-			dark: '#01392D',
+			dark: '#354c44',
+			darker: '#01392D',
 			mix: '#df6b78',
 		},
 		secondary: {
