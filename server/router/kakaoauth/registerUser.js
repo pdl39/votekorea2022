@@ -25,7 +25,7 @@ const registerUser = async (kakaoUserInfo) => {
     const isKoreaPhoneNumber = phoneNumber[1] === '8' && phoneNumber[2] === '2';
     // Must have a Korean phone number. Otherwise, return error.
     if (!hasPhoneNumber || !isKoreaPhoneNumber) {
-      throw newErr(403, "User must have a korean phone number");
+      throw newErr("korean_phone_number_required", 403);
     }
     // ADD PHONENUMBER
     userInfo.phoneNumber = phoneNumber;
@@ -45,7 +45,7 @@ const registerUser = async (kakaoUserInfo) => {
     return user;
   }
   catch (err) {
-    throw newErr(400, err);
+    throw newErr(err.message, err.status);
   };
 }
 
