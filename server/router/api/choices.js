@@ -5,7 +5,6 @@ const {
 
 //GET /api/choices/?userId={userId}&postId={postId} -> get a user's choice for a post.
 router.get('/', async (req, res, next) => {
-  console.log('FETCH_CHOICE_API_CALL. USERID: ', req.query);
   try {
     const choice = await Choice.findOne({
       where: {
@@ -13,9 +12,9 @@ router.get('/', async (req, res, next) => {
         postId: req.query.postId
       },
       include: User,
-      include: Post
     });
-    res.send(choice);
+    if (choice === null) res.json({});
+    else res.json(choice);
   } catch (error) {
     next(error);
   }
@@ -40,7 +39,8 @@ router.get('/:postId', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
 	try {
 		const choice = await Choice.create(req.body);
-		res.send(choice);
+    if (choice === null) res.json(choice);
+    else res.json(choice);
 	} catch (error) {
 		next(error);
 	}
@@ -48,7 +48,6 @@ router.post('/', async (req, res, next) => {
 
 //DELETE /api/choices/?userId={userId}&postId={postId}
 router.delete('/', async (req, res, next) => {
-  console.log('PARAMS: ', req);
   try {
     await Choice.destroy({
       where: {
