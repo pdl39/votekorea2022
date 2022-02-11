@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { newErr, runCommand } = require('../../utils');
 const User = require('../../db/models/User');
+const Choice = require('../../db/models/Choice');
 const registerUser = require('./registerUser');
 const { REDIRECT_URI, CLIENT_ID, CLIENT_SECRET } = process.env;
 const kakaoApiUrlGetToken = 'https://kauth.kakao.com/oauth/token';
@@ -44,7 +45,44 @@ router.post('/login', async (req, res, next) => {
 			const parsedKakaoUserInfo = JSON.parse(kakaoUserInfo);
 			const user = await registerUser(parsedKakaoUserInfo);
 
-			res.json({ kakaoTokens, user });
+			if (!req.body.postId && !req.body.chosenItemId) {
+				res.send({ kakaoTokens, user });
+			}
+			else {
+				// CREATE CHOICE INSTANCE IN DATABASE FOR THE USER (IF POSTID & ITEMID IN REQ.BODY)
+				if (req.body.postId && req.body.chosenItemId) {
+					try {
+						// FIRST SEE IF A CHOICE ALREADY EXISTS:
+							const choice = await Choice.findOne({
+								where: {
+									userId: user.id,
+									postId: req.body.postId
+								}
+							});
+						if (!choice) { // If a choice doesn't exist, create choice and send back normal response.
+							await Choice.create({
+								chosenItemId: req.body.chosenItemId,
+								postId: req.body.postId,
+								userId: user.id
+							})
+							res.send({ kakaoTokens, user });
+						}
+						else { // If choice already exists, add choice
+							console.log({
+								kakaoTokens,
+								user,
+								choice
+							});
+							// user = JSON.stringify(user);
+							res.send({ kakaoTokens, user, choice });
+						}
+					}
+					catch(err) {
+						throw newErr(err.message, err.status);
+					}
+				}
+			}
+
 		}
 	} catch (err) {
 		next(err);
@@ -149,7 +187,7 @@ router.post('/authenticate', async (req, res, next) => {
 			}
 		}
 
-		res.send({ kakaoTokens, user })
+		res.send({ kakaoTokens, user });
 	} catch (err) {
 		next(err);
 	}

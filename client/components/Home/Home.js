@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getKakaoToken, authenticate } from '../../store/kakaoAuth';
+import { login, authenticate } from '../../store/kakaoAuth';
 import Post from '../Post/Post';
 import Result from '../Result/Result';
 
 const defaultPostId = 1;
 
 const Home = () => {
+  // LocalStorage Item Keys
   const authCode = window.localStorage.getItem('kakaoAuthCode');
+  const PRECHOICE_POST_ID = 'preChoicePostId';
+  const PRECHOICE_ITEM_ID = 'preChoiceItemId';
 
   const auth = useSelector(state => state.kakaoAuth);
-  const choice = useSelector(state => state.choice);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -24,6 +26,7 @@ const Home = () => {
 		if (result && result.user.id) {
 			setIsLoggedIn(true);
 		}
+    return () => {};
 	}, []);
 
   	// UNMOUNT HANDLER.
@@ -33,26 +36,33 @@ const Home = () => {
 
   console.log(isLoggedIn);
 
-  // If auth code received from kakao redirect, get access token, register the user, and log the user in.
-  // If successful, the auth (state.kakaoAuth) will contain tokens and user objects.
-  useEffect(() => {
+  // If auth code received from kakao redirect, call dispatch call to get access token, register the user, and log the user in (done in server).
+  // Also if user was logged in while making a choice, the choice values saved in localStorage will be used to create the choice in the database. This will also be done in the same login route handler (in the server).
+  // If successful, the auth (state.kakaoAuth) will contain 'kakaoTokens' and 'user' objects.
+  useEffect(async () => {
     if (authCode) {
-      loginUser();
+      const result = await dispatch(login(authCode));
+      setIsLoggedIn(true);
+      console.log({result});
+      if (result.choiceExists) {
+          window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "선택 바꾸기"를 클릭하세요!`);
+
+          // Remove pre-choice saved before logging in.
+          window.localStorage.removeItem(PRECHOICE_POST_ID);
+          window.localStorage.removeItem(PRECHOICE_ITEM_ID);
+          history.push(`/results/${PRECHOICE_POST_ID}`);
+      }
     }
   }, [authCode]);
 
   useEffect(() => {
-    if (auth?.err) {
+    if (auth.err) {
       handleLoginError();
     }
   }, [auth]);
 
-  const loginUser = async () => {
-      await dispatch(getKakaoToken(authCode));
-  };
-
   const handleLoginError = () => {
-    console.log(auth.err.response);
+    console.log(auth.err);
     const errorStatus = auth.err.response.status;
     const errorStatusText = auth.err.response.statusText;
     const errorMessage = auth.err.response.data;
@@ -65,10 +75,7 @@ const Home = () => {
       const alertMessage = `${fullErrorMessage} \n로그인 실패. 다음 사항들을 확인 후 다시 로그인을 시도해주세요: \n(1) 카카오계정과 연동이 만료되면 재로그인 해야합니다. \n(2) 대한민국 휴대폰 번호가 카카오계정에 연동되어 있어야 합니다.`
       window.alert(alertMessage)
     }
-    history.push({
-      pathname: '/kakaologin',
-      state: {isOpen: true}
-    });
+    history.push('/kakaologin');
   };
 
 

@@ -15,9 +15,9 @@ const Post = (props) => {
 		postId: postIdProp,
 	} = props;
 
-	// LocalStorage Items Check
-	const preChoicePostId = window.localStorage.getItem('userChoiceBeforeLoginPostId');
-  const preChoiceItemId = window.localStorage.getItem('userChoiceBeforeLoginItemId');
+	// LocalStorage Item Keys
+	const PRECHOICE_POST_ID = 'preChoicePostId';
+  const PRECHOICE_ITEM_ID = 'preChoiceItemId';
 
 	const classes = useStyles();
 	const history = useHistory();
@@ -77,18 +77,6 @@ const Post = (props) => {
 		}
 	}, [auth, postId]);
 
-	// Submit user's choice made before logging in (stored in local storage) after loggin in.
-	// useEffect(async () => {
-	// 	if (isLoggedIn && preChoicePostId && preChoiceItemId) {
-	// 		const result = await dispatch(submitChoice(auth.user.id, preChoicePostId, preChoiceItemId));
-	// 		console.log(result);
-	// 		if (result.err && result.err.response.data === 'choice_exists') {
-	// 			await window.alert(`선택은 한 번만 할 수 있어요! \n다시 선택 하려면 "선택 바꾸기"를 클릭하세요!`);
-	// 		}
-	// 		history.push(`/results/${preChoicePostId}`);
-	// 	}
-	// }, [auth, preChoicePostId, preChoiceItemId]);
-
 	const handleSubmitChoice = async (selectedItemId) => {
 		if (selectedItemId === null) {
 			window.alert('아직 선택 하지 않았어요.\n선택 해주세요!');
@@ -109,16 +97,9 @@ const Post = (props) => {
 			}
 		}
 		else {
-			window.localStorage.setItem('userChoiceBeforeLoginPostId', postId);
-			window.localStorage.setItem('userChoiceBeforeLoginItemId', selectedItemId);
-			history.push({
-				pathname: '/kakaologin',
-				state: {
-					isOpen: true,
-					postId: postId,
-					selectedItemId: selectedItemId
-				}
-			});
+			window.localStorage.setItem(PRECHOICE_POST_ID, postId);
+			window.localStorage.setItem(PRECHOICE_ITEM_ID, selectedItemId);
+			history.push('/kakaologin');
 		}
 	}
 
