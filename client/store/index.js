@@ -5,12 +5,16 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import kakaoAuth from './kakaoAuth';
 import post from './post';
 import items from './items';
+import choice from './choice';
+import choices from './choices';
 
 // const reducer = combineReducers({ auth })
 const reducer = combineReducers({
 	kakaoAuth,
 	post,
 	items,
+	choice,
+	choices
 });
 
 const middlewares = [
