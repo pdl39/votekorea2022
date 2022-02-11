@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-// LocalStorage Items
+// LocalStorage Item Keys
+const PRECHOICE_POST_ID = 'preChoicePostId';
+const PRECHOICE_ITEM_ID = 'preChoiceItemId';
+const KAKAO_AUTH_CODE = 'kakaoAuthCode';
+
 const ACCESS_TOKEN = 'accessToken';
 const REFRESH_TOKEN = 'refreshToken';
 const EXPIRES_IN = 'expiresIn';
@@ -18,16 +22,18 @@ const _setAuth = kakaoAuth => {
 };
 
 // Thunks
-export const getKakaoToken = authCode => {
+export const login = (code) => { // every kakao api call is done server side (1. get auth code, 2. get access token, 3. register user 4. create choice instance (if pre-choice was made when loggin in))
 	return async dispatch => {
 		try {
-			const { data: { kakaoTokens, user } } = await axios.post(`/kakaoauth/login`, {
-				code: authCode
+			const { data: { kakaoTokens, user, choice } } = await axios.post(`/kakaoauth/login`, {
+				code,
+				postId: window.localStorage.getItem(PRECHOICE_POST_ID),
+				chosenItemId: window.localStorage.getItem(PRECHOICE_ITEM_ID)
 			});
 			const parsedKakaoTokens = JSON.parse(kakaoTokens);
-			// const parsedUser = JSON.parse(user);
 			console.log('KAKAOTOKENS: ', parsedKakaoTokens);
 			console.log('USER: ', user);
+			console.log('CHOICE: ', choice);
 
 			window.localStorage.setItem(ACCESS_TOKEN, parsedKakaoTokens.access_token);
 			window.localStorage.setItem(REFRESH_TOKEN, parsedKakaoTokens.refresh_token);
@@ -42,14 +48,20 @@ export const getKakaoToken = authCode => {
 				user: user
 			};
 
-			// After converting the auth code to access code, remove auth code from local storage.
-			window.localStorage.removeItem('kakaoAuthCode');
+			if (choice) {
+				kakaoAuth.choiceExists = true;
+			}
+
+			// Remove authcode from localStorage after successfully logging in.
+			window.localStorage.removeItem(KAKAO_AUTH_CODE);
+			console.log({kakaoAuth});
 
 			dispatch(_setAuth(kakaoAuth));
 			return kakaoAuth;
 		}
 		catch (err) {
-			window.localStorage.removeItem('kakaoAuthCode');
+			window.localStorage.removeItem(KAKAO_AUTH_CODE);
+			console.log(({err}))
 			dispatch(_setAuth({ err }));
 			return { err };
 		}

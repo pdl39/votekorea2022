@@ -15,9 +15,9 @@ const Post = (props) => {
 		postId: postIdProp,
 	} = props;
 
-	// LocalStorage Items Check
-	const preChoicePostId = window.localStorage.getItem('userChoiceBeforeLoginPostId');
-  const preChoiceItemId = window.localStorage.getItem('userChoiceBeforeLoginItemId');
+	// LocalStorage Item Keys
+	const PRECHOICE_POST_ID = 'preChoicePostId';
+  const PRECHOICE_ITEM_ID = 'preChoiceItemId';
 
 	const classes = useStyles();
 	const history = useHistory();
@@ -31,6 +31,7 @@ const Post = (props) => {
 
 	const [isFetchPostCalled, setIsFetchPostCalled] = useState(false);
 	const [selectedItemId, setSelectedItemId] = useState(null);
+	const [selectedItemName, setSelectedItemName] = useState(null);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	// AUTHENTICATE USER on component mount
@@ -76,18 +77,6 @@ const Post = (props) => {
 		}
 	}, [auth, postId]);
 
-	// Submit user's choice made before logging in (stored in local storage) after loggin in.
-	useEffect(async () => {
-		if (isLoggedIn && preChoicePostId && preChoiceItemId) {
-			const result = await dispatch(submitChoice(auth.user.id, preChoicePostId, preChoiceItemId));
-			console.log(result);
-			if (result.err && result.err.response.data === 'choice_exists') {
-				await window.alert(`선택은 한 번만 할 수 있어요! \n다시 선택 하려면 "선택 바꾸기"를 클릭하세요!`);
-			}
-			history.push(`/results/${preChoicePostId}`);
-		}
-	}, [auth, preChoicePostId, preChoiceItemId]);
-
 	const handleSubmitChoice = async (selectedItemId) => {
 		if (selectedItemId === null) {
 			window.alert('아직 선택 하지 않았어요.\n선택 해주세요!');
@@ -95,25 +84,33 @@ const Post = (props) => {
 		}
 
 		if (isLoggedIn) {
-			console.log(auth);
-			console.log(auth.user);
-			console.log(auth.user.id);
 			const result = await dispatch(fetchChoice(auth.user.id, postId));
-			if (result.choice) {
-				await window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "선택 바꾸기"를 클릭하세요!`);
+			console.log({result});
+			if (result.id) {
+				window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "선택 바꾸기"를 클릭하세요!`);
+				history.push(`/results/${postId}`);
+			}
+			else {
+				await dispatch(submitChoice(auth.user.id, postId, selectedItemId));
+				window.alert(`내 선택: \n${selectedItemName}!`);
 				history.push(`/results/${postId}`);
 			}
 		}
 		else {
-			window.localStorage.setItem('userChoiceBeforeLoginPostId', postId);
-			window.localStorage.setItem('userChoiceBeforeLoginItemId', selectedItemId);
-			history.push({
-				pathname: '/kakaologin',
-				state: {
-					postId,
-					selectedItemId
-				}
-			});
+			window.localStorage.setItem(PRECHOICE_POST_ID, postId);
+			window.localStorage.setItem(PRECHOICE_ITEM_ID, selectedItemId);
+			history.push('/kakaologin');
+		}
+	}
+
+	const toggleSelection = (itemId, itemName) => {
+		if (selectedItemId === itemId) {
+			setSelectedItemId(null);
+			setSelectedItemName(null);
+		}
+		else {
+			setSelectedItemId(itemId);
+			setSelectedItemName(itemName);
 		}
 	}
 
@@ -128,7 +125,7 @@ const Post = (props) => {
 				<div className={classes.itemsContainer}>
 					{
 						items.map((item) => (
-							<div key={item.id} onClick={() => setSelectedItemId(item.id)}>
+							<div key={item.id} onClick={() => toggleSelection(item.id, item.name)}>
 								<Item item={item} isSelected={item.id === selectedItemId} />
 							</div>
 						))

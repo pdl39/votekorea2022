@@ -1,5 +1,4 @@
-import React from 'react';
-// import axios from 'axios';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -15,10 +14,10 @@ const KakaoLogin = (props) => {
 		isOpen
 	} = props;
 
-	// const getKakaoAuthCode = () => {
-	// 	const { AUTH_URL } = await axios.get('/kakaoAuth/authUrl');
-
-	// }
+	// UNMOUNT hook
+	useEffect(() => {
+		return () => {};
+	}, []);
 
 	return (
 		<div>
@@ -32,9 +31,6 @@ const KakaoLogin = (props) => {
 					{'중복선택 방지를 위해 로그인 해주세요'}
 				</DialogTitle>
 				<DialogContent className={classes.dialogContent}>
-					<DialogContentText id="alert-dialog-description" className={classes.agreeText}>
-						<Link to="/serviceagreement">서비스약관</Link>에 동의하고 카카오계정으로 로그인하기
-					</DialogContentText>
 					<a href={AUTH_URL} >
 						<div className={classes.kakaoLoginButton}>
 								<img src="https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/third-party-assets/kakao_login_medium_narrow.png" alt="kakao login" className={classes.kakaoLoginImage} />
