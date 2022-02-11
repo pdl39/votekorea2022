@@ -61,5 +61,8 @@ module.exports = {
       title: pk.name,
       favicon: pk.favicon,
     }),
-  ]
+  ],
+  externals: {
+    moment: 'moment'
+  }
 }
