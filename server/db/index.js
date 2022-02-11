@@ -12,12 +12,11 @@ Post.belongsTo(Category);
 Post.hasMany(Item);
 Item.belongsTo(Post);
 
-User.belongsToMany(Post, {
-  through: Choice
-});
-Post.belongsToMany(User, {
-  through: Choice
-});
+User.hasMany(Choice);
+Choice.belongsTo(User, { foreignKey: 'userId '});
+
+Post.hasMany(Choice);
+Choice.belongsTo(Post, { foreignKey: 'postId '});
 
 module.exports = {
   db,
