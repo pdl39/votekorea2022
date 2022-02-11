@@ -63,7 +63,6 @@ app.get('*', (req, res, next) => {
 
 // ERROR HANDLER
 app.use((err, req, res, next) => {
-  console.log(err);
   console.log(err.stack);
   res.status(err.status ?? 500).send(err.message ?? 'Internal server error.');
 });
