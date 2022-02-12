@@ -7,9 +7,6 @@ const newErr = require('../../utils/newErr');
 const Choice = db.define('choice', {
   chosenItemId: {
     type: Sequelize.INTEGER,
-  },
-  chosenItemName: {
-    type: Sequelize.STRING,
   }
 });
 

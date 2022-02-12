@@ -80,6 +80,7 @@ const seed = async () => {
 		}
 	} catch (err) {
 		console.log(err);
+		throw Error(err);
 	}
 };
 
