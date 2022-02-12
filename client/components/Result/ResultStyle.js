@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   button: {
-    backgroundColor: theme.palette.primary.lighter,
+    backgroundColor: theme.palette.primary.light,
     margin: theme.spacing(3, 0, 2),
     cursor: 'pointer'
   },

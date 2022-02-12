@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
   postTitle: {
     textAlign: 'center',
     color: theme.palette.secondary.white,
+    marginTop: '25px'
   },
   itemsOuterContainer: {
     minHeight: '70%',

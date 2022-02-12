@@ -164,7 +164,7 @@ const Result = () => {
         </Button>
       </div>
       <div className={classes.buttonContainer}>
-        <Button variant="outlined" color="primary" className={classes.button} onClick={handleRemoveChoice}>
+        <Button variant="contained" color="primary" className={classes.button} onClick={handleRemoveChoice}>
           내 선택 바꾸기
         </Button>
       </div>
