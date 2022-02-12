@@ -7,7 +7,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DoughnutChart = (props) => {
   return (
-    <Doughnut data={props.data} />
+    <Doughnut data={props.data} options={props.options} />
   );
 }
 
