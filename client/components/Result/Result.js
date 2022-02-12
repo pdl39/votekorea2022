@@ -1,98 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import useStyles from './ResultStyle';
+import Button from '@material-ui/core/Button';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { authenticate } from '../../store/kakaoAuth';
-import { fetchChoices } from '../../store/choices';
 import { removeChoice } from '../../store/choice';
+import { fetchResultData } from '../../store/resultData';
 import DoughnutChart from './Chartjs/DoughnutChart';
 import BarChart from './Chartjs/BarChart';
-import useStyles from './ResultStyle';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { doughnutOptions, barOptions } from './Chartjs/_chartjsOptions';
+import _generateChartData from './Chartjs/_generateChartData';
 
-export const data = {
-  title: `16,049 명의 선택 결과:`,
-  labels: ['이재명', '윤석열', '안철수', '심상정', '김동연', '허경영'],
-  datasets: [
-    {
-      label: '선택 %',
-      data: [38, 45, 11, 3, 1, 2],
-      backgroundColor: [
-        `rgba(54, 162, 235, 0.3)`, // #36A2EB
-        `rgba(255, 99, 132, 0.3)`, // #FF6384
-        `rgba(255, 159, 64, 0.3)`, // #FF9F40
-        `rgba(255, 206, 86, 0.3)`, // #FFCE56
-        `rgba(147, 219, 120, 0.3)`, // #93DB78
-        `rgba(200, 200, 200, 0.3)`, // #C8C8C8
-      ],
-      borderColor: [
-        `rgba(54, 162, 235, 0.6)`,
-        `rgba(255, 99, 132, 0.6)`,
-        `rgba(239, 123, 60, 0.6)`,
-        `rgba(250, 206, 86, 0.6)`,
-        `rgba(147, 219, 120, 0.6)`,
-        `rgba(200, 200, 200, 0.6)`,
-      ],
-      borderWidth: 2,
-      color: 'fff',
-      hoverOffset: 10,
-    },
-  ],
-};
-
-const doughnutOptions = {
-  layout: {
-    padding: 0
-  },
-  plugins: {
-    title: {
-      color: '#fff'
-    },
-    legend: {
-      labels: {
-        color: "#fff",
-        font: {
-          size: 15
-        }
-      }
-    }
-  }
-};
-
-const barOptions = {
-  layout: {
-    padding: 0
-  },
-  plugins: {
-    title: {
-      color: '#fff'
-    },
-    legend: {
-      display: false,
-      labels: {
-        color: "#fff",
-        font: {
-          size: 15
-        }
-      }
-    }
-  }
-};
-
-const chartTypes = {
-  1: '도넛 차트',
-  2: '바 차트(세로)',
-}
 
 const Result = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  const choicesData = useSelector(state => state.choicesData);
+  const resultData = useSelector(state => state.resultData);
   const auth = useSelector(state => state.kakaoAuth);
   const postId = parseInt(useParams().id, 10);
 
+
   const [selectedChartType, setSelectedChartType] = useState(1);
+  const [chartData, setChartData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
@@ -114,13 +45,16 @@ const Result = () => {
     return () => {};
   }, [auth]);
 
-  // fetch choices data
-  useEffect(() => {
+  // Fetch Result Data & generate Chart Data to pass in as props to charts
+  useEffect(async () => {
     if (postId) {
-      dispatch(fetchChoices(postId));
+      const resultData = await dispatch(fetchResultData(postId));
+      if (resultData && !resultData.err) {
+        setChartData(_generateChartData(resultData));
+      }
     }
     return () => {}
-  }, []);
+  }, [postId]);
 
   const handleRemoveChoice = async () => {
     if (isLoggedIn && postId) {
@@ -134,24 +68,35 @@ const Result = () => {
     }
   };
 
+  const toCommaString = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     isLoggedIn &&
     <div className={classes.resultContainer}>
       <div className={classes.titleContainer}>
-        <div color="primary" className={classes.postTitle}>
-          {`총 ${choicesData?.count || 'n'} 명의 선택 결과`}
+        {
+          chartData &&
+          <div color="primary" className={classes.postTitle}>
+            {`총 ${toCommaString(resultData.totalChoiceCount)} 명의 선택 결과`}
+          </div>
+        }
+      </div>
+      {
+        chartData ?
+        <div className={classes.chartContainer}>
+          {
+            selectedChartType === 1 &&
+            <DoughnutChart data={chartData} options={doughnutOptions} />
+          }
+          {
+            selectedChartType === 2 &&
+            <BarChart data={chartData} options={barOptions} />
+          }
         </div>
-      </div>
-      <div className={classes.chartContainer}>
-        {
-          selectedChartType === 1 &&
-          <DoughnutChart data={data} options={doughnutOptions} />
-        }
-        {
-          selectedChartType === 2 &&
-          <BarChart data={data} options={barOptions} />
-        }
-      </div>
+        : <Skeleton animation="wave" variant="rect" width={300} height={300} />
+      }
       <h4 className={classes.chartTypeLabel}>차트 타입 선택</h4>
       <div className={classes.chartTypesContainer}>
         <Button type="button" variant="outlined" className={classes.chartTypeButton} onClick={() => setSelectedChartType(1)}>

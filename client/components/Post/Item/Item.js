@@ -12,19 +12,14 @@ const Item = (props) => {
     isSelected
   } = props;
 
-  useEffect(() => {
-    if (imageLoaded) {
-      console.log('image loaded!');
-    }
-  }, [imageLoaded]);
-
-  const handleImageLoad = () => {
-    setImageLoaded(true);
+  const handleImageLoad = (bool) => {
+    console.log('set image loaded status: ', bool);
+    setImageLoaded(bool);
   }
 
 	return (
     <div className={isSelected ? classes.itemSelected : classes.item}>
-      <div onLoad={handleImageLoad} className={classes.imageContainer}>
+      <div className={classes.imageContainer}>
         {
           isSelected &&
           <div className={classes.selectedItemCheck}>
@@ -32,10 +27,12 @@ const Item = (props) => {
           </div>
         }
         {
+        !imageLoaded &&
+          <Skeleton animation="wave" variant="rect" width={80} height={100} />
+        }
+        {
           item.imageUrl.length &&
-          imageLoaded ?
-          <img src={item.imageUrl} onLoad={handleImageLoad} className={classes.image} alt="item image"/>
-          : <Skeleton animation="wave" variant="rect" width={80} height={100} />
+          <img src={item.imageUrl} onLoad={() => handleImageLoad(true)} className={imageLoaded ? classes.image : { display: 'none' }} alt={item.name} />
         }
       </div>
       <div className={classes.nameContainer}>

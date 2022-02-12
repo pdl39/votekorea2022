@@ -57,7 +57,7 @@ const Home = () => {
       const postId = window.localStorage.getItem(PRECHOICE_POST_ID);
       window.localStorage.removeItem(PRECHOICE_POST_ID);
       window.localStorage.removeItem(PRECHOICE_ITEM_ID);
-      history.push(`/results/${postId}`);
+      history.push(`/results/${postId || defaultPostId}`);
     }
   }, [authCode]);
 

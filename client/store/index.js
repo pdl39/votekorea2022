@@ -8,6 +8,7 @@ import item from './item';
 import items from './items';
 import choice from './choice';
 import choices from './choices';
+import resultData from './resultData';
 
 // const reducer = combineReducers({ auth })
 const reducer = combineReducers({
@@ -16,7 +17,8 @@ const reducer = combineReducers({
 	item,
 	items,
 	choice,
-	choices
+	choices,
+	resultData
 });
 
 const middlewares = [

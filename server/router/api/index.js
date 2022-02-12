@@ -5,6 +5,7 @@ module.exports = router;
 router.use('/items', require('./items'));
 router.use('/posts', require('./posts'));
 router.use('/choices', require('./choices'));
+router.use('/result_data', require('./result_data'));
 
 // ERROR HANDLER
 router.use((req, res, next) => {

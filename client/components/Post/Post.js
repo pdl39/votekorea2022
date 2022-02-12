@@ -100,7 +100,7 @@ const Post = (props) => {
 	}
 
 	const toggleSelection = (itemId, itemName) => {
-		if (choice?.id) {
+		if (auth.user?.id && choice?.id) {
 			window.alert(`이미 선택한 기록이 있어요! \n다시 선택 하려면 결과 페이지에서 "내 선택 바꾸기"를 클릭하세요!`);
 			return;
 		}
@@ -135,7 +135,7 @@ const Post = (props) => {
 			</div>
 			<div className={classes.buttonContainer}>
 				{
-					!choice?.id &&
+					(!isLoggedIn || !choice?.id) &&
 					<Button type="button" variant="contained" color="primary" className={classes.button} onClick={() => handleSubmitChoice(selectedItemId)}>
 						선택 확인
 					</Button>
