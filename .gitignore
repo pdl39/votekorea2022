@@ -21,3 +21,8 @@ node_modules
 # directly un-ignoring the whole path to the desired file/folder will not work (e.g. !/assets/favicon/favicon.ico)
 # ***********************************************************
 
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
