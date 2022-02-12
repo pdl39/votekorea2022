@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, authenticate } from '../../store/kakaoAuth';
+import { fetchItem } from '../../store/item';
 import Post from '../Post/Post';
 import Result from '../Result/Result';
 
@@ -19,22 +20,19 @@ const Home = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-	// AUTHENTICATE USER on component mount
-	useEffect(async () => {
-		const result = await dispatch(authenticate());
-		console.log('authentication dispatch was run');
-		if (result && result.user.id) {
-			setIsLoggedIn(true);
-		}
-    return () => {};
-	}, []);
-
-  	// UNMOUNT HANDLER.
+	// Login Check
 	useEffect(() => {
+    setIsLoggedIn(!!auth.user?.id);
+    console.log('USER IS LOGGED IN! - FROM HOME');
 		return () => {};
-	}, []);
+	}, [auth]);
 
-  console.log(isLoggedIn);
+  useEffect(() => {
+    if (auth.err) {
+      handleLoginError();
+    }
+    return () => {};
+  }, [auth]);
 
   // If auth code received from kakao redirect, call dispatch call to get access token, register the user, and log the user in (done in server).
   // Also if user was logged in while making a choice, the choice values saved in localStorage will be used to create the choice in the database. This will also be done in the same login route handler (in the server).
@@ -43,23 +41,24 @@ const Home = () => {
     if (authCode) {
       const result = await dispatch(login(authCode));
       setIsLoggedIn(true);
-      console.log({result});
-      if (result.choiceExists) {
-          window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "선택 바꾸기"를 클릭하세요!`);
-
-          // Remove pre-choice saved before logging in.
-          window.localStorage.removeItem(PRECHOICE_POST_ID);
-          window.localStorage.removeItem(PRECHOICE_ITEM_ID);
-          history.push(`/results/${PRECHOICE_POST_ID}`);
+      if (result.choice) {
+        window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "내 선택 바꾸기"를 클릭하세요!`);
       }
+      else {
+        const itemId = window.localStorage.getItem(PRECHOICE_ITEM_ID);
+        const itemResult = await dispatch(fetchItem(itemId));
+        console.log(itemResult);
+        if (itemResult && itemResult.id) {
+          window.alert(`내 선택: \n${itemResult.name}!`);
+        }
+      }
+      // Remove pre-choice saved before logging in.
+      const postId = window.localStorage.getItem(PRECHOICE_POST_ID);
+      window.localStorage.removeItem(PRECHOICE_POST_ID);
+      window.localStorage.removeItem(PRECHOICE_ITEM_ID);
+      history.push(`/results/${postId}`);
     }
   }, [authCode]);
-
-  useEffect(() => {
-    if (auth.err) {
-      handleLoginError();
-    }
-  }, [auth]);
 
   const handleLoginError = () => {
     console.log(auth.err);

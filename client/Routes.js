@@ -17,56 +17,29 @@ const Routes = () => {
 	// AUTHENTICATE USER on component mount
 	useEffect(async () => {
     const result = await dispatch(authenticate());
+    setIsLoggedIn(result && !!result.user?.id);
 		console.log('authentication dispatch was run');
-		if (result && result.user.id) {
-      setIsLoggedIn(true);
-		}
 	}, []);
-
-  console.log(isLoggedIn);
 
 	return (
     <div className="routes-container">
-      {
-        !isLoggedIn
-        ? <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/kakaologin">
-            <KakaoLogin isOpen={true} />
-          </Route>
-          <Route exact path="/serviceagreement">
-            <Home />
-          </Route>
-          <Route exact path="/posts/:id">
-            <Post />
-          </Route>
-          <Route path="/results/:id">
-            <Redirect to="/" />
-          </Route>
-          <Route>
-            <Fallback />
-          </Route>
-        </Switch>
-        : <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/kakaologin">
-            <Redirect to="/" />
-          </Route>
-          <Route exact path="/posts/:id">
-            <Post />
-          </Route>
-          <Route exact path="/results/:id">
-            <Result />
-          </Route>
-          <Route>
-            <Fallback />
-          </Route>
-        </Switch>
-      }
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/kakaologin">
+          <KakaoLogin />
+        </Route>
+        <Route exact path="/posts/:id">
+          <Post />
+        </Route>
+        <Route exact path="/results/:id">
+          <Result />
+        </Route>
+        <Route>
+          <Fallback />
+        </Route>
+      </Switch>
     </div>
 	);
 };

@@ -42,6 +42,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
 	button: {
+    width: '200px',
 		margin: theme.spacing(3, 0, 2),
 	},
 }));

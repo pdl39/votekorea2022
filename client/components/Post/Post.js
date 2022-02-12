@@ -5,10 +5,11 @@ import { authenticate } from '../../store/kakaoAuth';
 import { fetchPost } from '../../store/post';
 import { fetchItems } from '../../store/items';
 import { submitChoice, fetchChoice } from '../../store/choice';
-import useStyles from './PostStyle';
-import Item from './Item/Item';
+import Grow from '@material-ui/core/Grow';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import useStyles from './PostStyle';
+import Item from './Item/Item';
 
 const Post = (props) => {
 	const {
@@ -22,45 +23,32 @@ const Post = (props) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const postId = postIdProp || parseInt(useParams().id, 10);
+
 	const auth = useSelector(state => state.kakaoAuth);
 	const post = useSelector(state => state.post);
 	const items = useSelector(state => state.items);
-	const choice = useSelector(state => state.choice);
 	const dispatch = useDispatch();
-
 
 	const [isFetchPostCalled, setIsFetchPostCalled] = useState(false);
 	const [selectedItemId, setSelectedItemId] = useState(null);
 	const [selectedItemName, setSelectedItemName] = useState(null);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-	// AUTHENTICATE USER on component mount
-	useEffect(async () => {
-		const result = await dispatch(authenticate());
-		console.log('authentication dispatch was run');
-		if (result && result.user?.id) {
-			setIsLoggedIn(true);
-		}
-	}, []);
-
-	// UNMOUNT HANDLER.
+	// Login Check
 	useEffect(() => {
+		setIsLoggedIn(!!auth.user?.id);
+		// console.log(`${!!auth.user?.id}`);
+		console.log(`USER IS LOGGED IN - ${!!auth.user?.id} - FROM POST`);
 		return () => {};
-	}, []);
-
-	// Handle fallback routes
-	useEffect(() => {
-		if (isFetchPostCalled && postId && (post?.id !== postId)) {
-			history.push(`/posts/${postId}/page-not-found`);
-		}
-	}, [isFetchPostCalled]);
+	}, [auth]);
 
 	// Fetch post
-	useEffect(async () => {
+	useEffect(() => {
 		if (postId) {
-			await dispatch(fetchPost(postId));
-			setIsFetchPostCalled(true);
+			dispatch(fetchPost(postId));
+			// setIsFetchPostCalled(true);
 		}
+		return () => {};
   }, [postId]);
 
 	// Fetch post items
@@ -68,13 +56,16 @@ const Post = (props) => {
 		if (postId) {
 			dispatch(fetchItems(postId));
 		}
+		return () => {};
 	}, [postId]);
 
 	// Fetch choice
 	useEffect(() => {
-		if (isLoggedIn && postId) {
+		if (auth.user?.id && postId) {
+			console.log(`isLoggedIn: ${isLoggedIn}, auth: ${auth}`);
 			dispatch(fetchChoice(auth.user.id, postId));
 		}
+		return () => {};
 	}, [auth, postId]);
 
 	const handleSubmitChoice = async (selectedItemId) => {
@@ -83,11 +74,11 @@ const Post = (props) => {
 			return;
 		}
 
-		if (isLoggedIn) {
+		if (auth.user?.id) {
 			const result = await dispatch(fetchChoice(auth.user.id, postId));
 			console.log({result});
 			if (result.id) {
-				window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "선택 바꾸기"를 클릭하세요!`);
+				window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "내 선택 바꾸기"를 클릭하세요!`);
 				history.push(`/results/${postId}`);
 			}
 			else {
@@ -126,7 +117,7 @@ const Post = (props) => {
 					{
 						items.map((item) => (
 							<div key={item.id} onClick={() => toggleSelection(item.id, item.name)}>
-								<Item item={item} isSelected={item.id === selectedItemId} />
+									<Item item={item} isSelected={item.id === selectedItemId} />
 							</div>
 						))
 					}

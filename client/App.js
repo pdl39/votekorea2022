@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, authenticate } from './store/kakaoAuth';
 import Navbar from './components/Navbar/Navbar';
 import Routes from './Routes';
-import Footer from './components/Footer/Footer';
 
 // Get Kakao Login Authentication Code from url params & set localstorage if received.
 const kakaoAuthCode = new URLSearchParams(window.location.search).get('code');
@@ -25,11 +26,21 @@ else {
 
 
 const App = () => {
-	return (
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const auth = useSelector(state => state.kakaoAuth);
+
+  // AUTHENTICATE USER on App mount.
+  useEffect(async () => {
+    await dispatch(authenticate());
+    return () => {};
+  }, []);
+
+
+  return (
     <>
       <Navbar />
 		  <Routes />
-      <Footer />
     </>
 	);
 };
