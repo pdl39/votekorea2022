@@ -59,7 +59,6 @@ const Post = (props) => {
 	// Fetch choice
 	useEffect(() => {
 		if (auth.user?.id && postId) {
-			console.log(`isLoggedIn: ${isLoggedIn}, auth: ${auth}`);
 			dispatch(fetchChoice(auth.user.id, postId));
 		}
 		return () => {};
@@ -73,9 +72,8 @@ const Post = (props) => {
 
 		if (auth.user?.id) {
 			const result = await dispatch(fetchChoice(auth.user.id, postId));
-			console.log({result});
 			if (result.id) {
-				window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "내 선택 바꾸기"를 클릭하세요!`);
+				window.alert(`이미 선택한 기록이 있어요! \n다시 선택 하려면 결과 페이지에서 "내 선택 바꾸기"를 클릭하세요!`);
 				history.push(`/results/${postId}`);
 			}
 			else {
@@ -102,6 +100,11 @@ const Post = (props) => {
 	}
 
 	const toggleSelection = (itemId, itemName) => {
+		if (auth.user?.id && choice?.id) {
+			window.alert(`이미 선택한 기록이 있어요! \n다시 선택 하려면 결과 페이지에서 "내 선택 바꾸기"를 클릭하세요!`);
+			return;
+		}
+
 		if (selectedItemId === itemId) {
 			setSelectedItemId(null);
 			setSelectedItemName(null);
@@ -131,9 +134,12 @@ const Post = (props) => {
 				</div>
 			</div>
 			<div className={classes.buttonContainer}>
-				<Button type="button" variant="contained" color="primary" className={classes.button} onClick={() => handleSubmitChoice(selectedItemId)}>
-					선택 확인
-				</Button>
+				{
+					(!isLoggedIn || !choice?.id) &&
+					<Button type="button" variant="contained" color="primary" className={classes.button} onClick={() => handleSubmitChoice(selectedItemId)}>
+						선택 확인
+					</Button>
+				}
 				{
 					isLoggedIn && choice.id &&
 					<Button variant="contained" color="secondary" className={classes.button} onClick={handleSeeResult} >

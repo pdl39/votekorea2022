@@ -42,7 +42,7 @@ const Home = () => {
       const result = await dispatch(login(authCode));
       setIsLoggedIn(true);
       if (result.choice) {
-        window.alert(`선택은 한 번만 할 수 있어요!. \n다시 선택 하려면 결과 페이지에서 "내 선택 바꾸기"를 클릭하세요!`);
+        window.alert(`이미 선택한 기록이 있어요! \n다시 선택 하려면 결과 페이지에서 "내 선택 바꾸기"를 클릭하세요!`);
       }
       else {
         const itemId = window.localStorage.getItem(PRECHOICE_ITEM_ID);
@@ -57,7 +57,7 @@ const Home = () => {
       const postId = window.localStorage.getItem(PRECHOICE_POST_ID);
       window.localStorage.removeItem(PRECHOICE_POST_ID);
       window.localStorage.removeItem(PRECHOICE_ITEM_ID);
-      history.push(`/results/${postId}`);
+      history.push(`/results/${postId || defaultPostId}`);
     }
   }, [authCode]);
 

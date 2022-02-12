@@ -24,9 +24,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:postId', async (req, res, next) => {
 	try {
 		const choices = await Choice.findAll({
-			where: { postId: req.params.postId },
-			include: User,
-      include: Post
+			where: { postId: req.params.postId }
 		});
 		sortedChoices = choices.sort((a, b) => a.chosenItemId - b.chosenItemId);
     res.send(sortedChoices);

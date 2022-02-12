@@ -26,6 +26,21 @@ export const fetchItems = postId => {
   }
 };
 
+// Thunks
+export const fetchItemsProcessed = postId => {
+  try {
+    return async dispatch => {
+      const { data: items } = await axios.get(`/api/items/${postId}?processed=true`);
+      dispatch(_fetchItems(items));
+      return items;
+    };
+  }
+  catch(err) {
+    dispatch(_fetchItems({ err }));
+    return { err };
+  }
+};
+
 // Reducer export
 export default function (state = [], action) {
   switch (action.type) {

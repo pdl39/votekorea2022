@@ -12,6 +12,7 @@ const Item = db.define('item', {
   },
   bgColor: {
     type: Sequelize.STRING,
+    defaultValue: '#7F8E93' // oslo gray
   },
   itemOrder: {
     type: Sequelize.INTEGER,

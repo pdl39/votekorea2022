@@ -26,7 +26,7 @@ const items = [
   {
     name: '이재명',
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ljm.png',
-    bgColor: 'blue',
+    bgColor: '#36A2EB',
     itemOrder: 1,
     isValid: true,
     postId: 1
@@ -34,7 +34,7 @@ const items = [
   {
     name: '윤석열',
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ysy.png',
-    bgColor: 'red',
+    bgColor: '#FF6384',
     itemOrder: 2,
     isValid: true,
     postId: 1
@@ -42,7 +42,7 @@ const items = [
   {
     name: '안철수',
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/acs.png',
-    bgColor: 'orange',
+    bgColor: '#FF9F40',
     itemOrder: 3,
     isValid: true,
     postId: 1
@@ -50,7 +50,7 @@ const items = [
   {
     name: '심상정',
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/ssj.png',
-    bgColor: 'yellow',
+    bgColor: '#FFCE56',
     itemOrder: 4,
     isValid: true,
     postId: 1
@@ -58,7 +58,7 @@ const items = [
   {
     name: '김동연',
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/kdy.png',
-    bgColor: 'grey',
+    bgColor: '#93DB78',
     itemOrder: 5,
     isValid: true,
     postId: 1
@@ -66,7 +66,7 @@ const items = [
   {
     name: '허경영',
     imageUrl: 'https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/items/hky.png',
-    bgColor: 'grey',
+    bgColor: '#C8C8C8',
     itemOrder: 6,
     isValid: true,
     postId: 1

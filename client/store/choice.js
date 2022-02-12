@@ -48,12 +48,11 @@ export const fetchChoice = (userId, postId) => {
   };
 };
 
-export const submitChoice = (userId, postId, itemId, itemName) => {
+export const submitChoice = (userId, postId, itemId) => {
   return async dispatch => {
     try {
       const { data: choice } = await axios.post(`/api/choices`, {
         chosenItemId: itemId,
-        chosenItemName: itemName,
         userId,
         postId
       });
