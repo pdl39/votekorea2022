@@ -18,18 +18,19 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-
 	logo: {
 		height: '45px',
     width: '100%',
 	},
-
-	menuButtonAndUerVerified: {
+	menuAndUserContainer: {
 		display: 'flex',
 		marginRight: '0.5em',
 		alignItems: 'center',
+		justifyContent: 'flex-end'
 	},
-
+	userContainer: {
+		fontSize: 15
+	},
 	userContainer: {
 		paddingRight: '0.5em',
 		color: theme.palette.secondary.white,

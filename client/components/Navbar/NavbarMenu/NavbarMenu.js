@@ -1,37 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ListItemText from '@material-ui/core/ListItemText';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import MenuIcon from '@material-ui/icons/Menu';
-import { StyledMenu, StyledMenuItem } from './NavbarMenuStyle';
-// import { logout } from '../../store';
+import StyledMenu from '../../customMuiComponents/StyledMenu';
+import StyledMenuItem from '../../customMuiComponents/StyledMenuItem';
+import useStyles from './NavbarMenuStyle';
+import { logout } from '../../../store/kakaoAuth';
 
 const NavbarMenu = () => {
-	const [anchorEl, setAnchorEl] = useState(null);
-	// const user = useSelector(state => state.auth);
-	const dispatch = useDispatch();
+	const classes = useStyles();
 	const history = useHistory();
+	const dispatch = useDispatch();
+
+	const auth = useSelector(state => state.kakaoAuth);
+
+	const [anchorEl, setAnchorEl] = useState(null);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	// const room = useSelector(state => state.room);
 
-	// useEffect(async () => {
-	// 	setIsLoggedIn(!!user.id);
-	// }, [user]);
+	// Login Check
+	useEffect(() => {
+		setIsLoggedIn(!!auth.user?.id);
+		return () => {};
+	}, [auth]);
 
-	// const handleClick = event => {
-	// 	setAnchorEl(event.currentTarget);
-	// };
+	const handleClick = event => {
+		setAnchorEl(event.currentTarget);
+		return () => {};
+	};
 
-	// const handleClose = () => {
-	// 	setAnchorEl(null);
-	// };
+	const handleClose = () => {
+		setAnchorEl(null);
+		return () => {};
+	};
 
-	// const handleLogout = async () => {
-	// 	await dispatch(logout());
-	// 	handleClose();
-	// 	history.push('/login');
-	// };
+	const handleLogout = async () => {
+		await dispatch(logout());
+		handleClose();
+		history.push('/');
+		return () => {};
+	};
+
+	const handleLogin = async () => {
+		handleClose();
+		history.push('/kakaologin');
+		return () => {};
+	};
 
 	return (
 		<div>
@@ -44,7 +58,7 @@ const NavbarMenu = () => {
 			>
 				<MenuIcon style={{ color: '#fff' }} fontSize="large" />
 			</ButtonBase>
-			{/* {isLoggedIn ? (
+			{isLoggedIn ? (
 				<StyledMenu
 					id="customized-menu"
 					anchorEl={anchorEl}
@@ -53,7 +67,10 @@ const NavbarMenu = () => {
 					onClose={handleClose}
 				>
 					<StyledMenuItem>
-						<ListItemText onClick={handleLogout} primary="로그아웃" />
+						{/* <ListItemText onClick={handleLogout} primary="로그아웃" /> */}
+						<div onClick={handleLogout} className={classes.menuItem}>
+							로그아웃
+						</div>
 					</StyledMenuItem>
 				</StyledMenu>
 			) : (
@@ -65,12 +82,12 @@ const NavbarMenu = () => {
 					onClose={handleClose}
 				>
 					<StyledMenuItem>
-						<a href="/" target="_blank">
-							<ListItemText primary={'About Vote Korea 2022'} />
-						</a>
+							<div onClick={handleLogin} className={classes.menuItem} >
+								로그인
+							</div>
 					</StyledMenuItem>
 				</StyledMenu>
-			)} */}
+			)}
 		</div>
 	);
 };
