@@ -21,5 +21,3 @@ node_modules
 # directly un-ignoring the whole path to the desired file/folder will not work (e.g. !/assets/favicon/favicon.ico)
 # ***********************************************************
 
-#TEMPORARY IGNORE FOR SECURITY REASONS
-/client/components/KakaoLogin/KakaoLoginInfo.js

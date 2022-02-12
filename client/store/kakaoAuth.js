@@ -12,12 +12,19 @@ const REFRESH_TOKEN_EXPIRES_IN = 'refreshTokenExpiresIn';
 
 // Action Types
 const SET_AUTH = 'SET_AUTH';
+const LOGOUT = 'LOGOUT';
 
 // Action Creators
 const _setAuth = kakaoAuth => {
 	return {
 		type: SET_AUTH,
 		kakaoAuth,
+	};
+};
+
+const _logout = () => {
+	return {
+		type: LOGOUT,
 	};
 };
 
@@ -31,9 +38,6 @@ export const login = (code) => { // every kakao api call is done server side (1.
 				chosenItemId: window.localStorage.getItem(PRECHOICE_ITEM_ID)
 			});
 			const parsedKakaoTokens = JSON.parse(kakaoTokens);
-			console.log('KAKAOTOKENS: ', parsedKakaoTokens);
-			console.log('USER: ', user);
-			console.log('CHOICE: ', choice);
 
 			window.localStorage.setItem(ACCESS_TOKEN, parsedKakaoTokens.access_token);
 			window.localStorage.setItem(REFRESH_TOKEN, parsedKakaoTokens.refresh_token);
@@ -49,7 +53,7 @@ export const login = (code) => { // every kakao api call is done server side (1.
 			};
 
 			if (choice) {
-				kakaoAuth.choiceExists = true;
+				kakaoAuth.choice = choice;
 			}
 
 			// Remove authcode from localStorage after successfully logging in.
@@ -111,12 +115,8 @@ export const authenticate = () => {
 		}
 		catch (err) {
 			console.log({err});
-			window.localStorage.removeItem(ACCESS_TOKEN);
-			window.localStorage.removeItem(REFRESH_TOKEN);
-			window.localStorage.removeItem(EXPIRES_IN);
-			window.localStorage.removeItem(REFRESH_TOKEN_EXPIRES_IN);
-
 			dispatch(_setAuth({}));
+			return { err };
 		}
 	};
 };
@@ -127,9 +127,17 @@ export const logout = () => {
 	window.localStorage.removeItem(EXPIRES_IN);
 	window.localStorage.removeItem(REFRESH_TOKEN_EXPIRES_IN);
 
+	console.log('logout dispatch called');
+
 	return {
-		type: SET_AUTH,
-		kakaoAuth: {}
+		type: LOGOUT,
+		kakaoAuth: {
+			accessToken: window.localStorage.getItem(ACCESS_TOKEN),
+			refreshToken: window.localStorage.getItem(REFRESH_TOKEN),
+			expiresIn: window.localStorage.getItem(EXPIRES_IN),
+			refreshTokenExpiresIn: window.localStorage.getItem(REFRESH_TOKEN_EXPIRES_IN),
+			user: {}
+		}
 	};
 };
 
@@ -138,12 +146,15 @@ const initialState = {
 	accessToken: window.localStorage.getItem(ACCESS_TOKEN),
 	refreshToken: window.localStorage.getItem(REFRESH_TOKEN),
 	expiresIn: window.localStorage.getItem(EXPIRES_IN),
-	refreshTokenExpiresIn: window.localStorage.getItem(REFRESH_TOKEN_EXPIRES_IN)
+	refreshTokenExpiresIn: window.localStorage.getItem(REFRESH_TOKEN_EXPIRES_IN),
+	user: {}
 };
 
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case SET_AUTH:
+			return action.kakaoAuth;
+		case LOGOUT:
 			return action.kakaoAuth;
 		default:
 			return state;

@@ -4,6 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import kakaoAuth from './kakaoAuth';
 import post from './post';
+import item from './item';
 import items from './items';
 import choice from './choice';
 import choices from './choices';
@@ -12,6 +13,7 @@ import choices from './choices';
 const reducer = combineReducers({
 	kakaoAuth,
 	post,
+	item,
 	items,
 	choice,
 	choices

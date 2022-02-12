@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -10,19 +11,18 @@ import AUTH_URL from './KakaoLoginInfo';
 const KakaoLogin = (props) => {
 	const classes = useStyles();
 
-	const {
-		isOpen
-	} = props;
+	const auth = useSelector(state => state.kakaoAuth);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-	// UNMOUNT hook
 	useEffect(() => {
+		setIsLoggedIn(!!auth.user?.id);
 		return () => {};
-	}, []);
+	}, [auth]);
 
 	return (
 		<div>
 			<Dialog
-				open={isOpen}
+				open={true}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 				className={classes.dialogContainer}

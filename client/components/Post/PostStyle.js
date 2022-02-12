@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
   postTitle: {
     textAlign: 'center',
     color: theme.palette.secondary.white,
+    marginTop: '25px'
   },
   itemsOuterContainer: {
     minHeight: '70%',
@@ -38,11 +39,14 @@ const useStyles = makeStyles(theme => ({
   buttonContainer: {
     height: '8%',
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
 	button: {
-		margin: theme.spacing(3, 0, 2),
+    width: '200px',
+    margin: '5px',
+		// margin: theme.spacing(3, 0, 2),
 	},
 }));
 

@@ -5,62 +5,116 @@ import { authenticate } from '../../store/kakaoAuth';
 import { fetchChoices } from '../../store/choices';
 import { removeChoice } from '../../store/choice';
 import DoughnutChart from './Chartjs/DoughnutChart';
+import BarChart from './Chartjs/BarChart';
 import useStyles from './ResultStyle';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 export const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  title: `16,049 명의 선택 결과:`,
+  labels: ['이재명', '윤석열', '안철수', '심상정', '김동연', '허경영'],
   datasets: [
     {
-      label: '선택한 이용자 수',
-      data: [12, 19, 3, 5, 2, 3],
+      label: '선택 %',
+      data: [38, 45, 11, 3, 1, 2],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
+        `rgba(54, 162, 235, 0.3)`, // #1736AA
+        `rgba(255, 99, 132, 0.3)`, // #D8212D
+        `rgba(255, 159, 64, 0.3)`, // #EF7B3C
+        `rgba(255, 206, 86, 0.3)`, // #FACA09
+        `rgba(147, 219, 120, 0.3)`, // #6ED349
+        `rgba(200, 200, 200, 0.3)`, // #C8C8C8
       ],
       borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
+        `rgba(54, 162, 235, 0.6)`,
+        `rgba(255, 99, 132, 0.6)`,
+        `rgba(239, 123, 60, 0.6)`,
+        `rgba(250, 206, 86, 0.6)`,
+        `rgba(147, 219, 120, 0.6)`,
+        `rgba(200, 200, 200, 0.6)`,
       ],
-      borderWidth: 1,
+      borderWidth: 2,
+      color: 'fff',
+      hoverOffset: 10,
     },
   ],
 };
+
+const doughnutOptions = {
+  layout: {
+    padding: 0
+  },
+  plugins: {
+    title: {
+      color: '#fff'
+    },
+    legend: {
+      labels: {
+        color: "#fff",
+        font: {
+          size: 15
+        }
+      }
+    }
+  }
+};
+
+const barOptions = {
+  layout: {
+    padding: 0
+  },
+  plugins: {
+    title: {
+      color: '#fff'
+    },
+    legend: {
+      display: false,
+      labels: {
+        color: "#fff",
+        font: {
+          size: 15
+        }
+      }
+    }
+  }
+};
+
+const chartTypes = {
+  1: '도넛 차트',
+  2: '바 차트(세로)',
+}
 
 const Result = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  const choices = useSelector(state => state.choices);
+  const choicesData = useSelector(state => state.choicesData);
   const auth = useSelector(state => state.kakaoAuth);
   const postId = parseInt(useParams().id, 10);
 
+  const [selectedChartType, setSelectedChartType] = useState(1);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log(isLoggedIn);
 
-	// AUTHENTICATE USER on component mount
+
+  // AUTHENTICATE USER on component mount
 	useEffect(async () => {
     const result = await dispatch(authenticate());
-		console.log('authentication dispatch was run');
-		if (result && result.user.id) {
+    if (result && result.user?.id) {
       setIsLoggedIn(true);
-		}
+    }
+    else {
+      window.alert(`결과 페이지를 보려면 로그인을 해야해요!`);
+      history.push('/');
+    }
 	}, []);
 
-  // UNMOUNT HANDLER.
-	useEffect(() => {
-		return () => {};
-	}, []);
+  // Login Check
+  useEffect(() => {
+    setIsLoggedIn(!!auth.user?.id);
+    return () => {};
+  }, [auth]);
 
+  // fetch choices data
   useEffect(() => {
     if (postId) {
       dispatch(fetchChoices(postId));
@@ -68,11 +122,9 @@ const Result = () => {
     return () => {}
   }, []);
 
-  console.log(choices);
-
   const handleRemoveChoice = async () => {
     if (isLoggedIn && postId) {
-      const result = await dispatch(removeChoice(auth.user.id, postId));
+      const result = await dispatch(removeChoice(auth.user?.id, postId));
       console.log(result);
       if (result.err) {
         window.alert(`선택 초기화에 실패하였습니다. 잠시후에 다시 시도해주세요.`);
@@ -83,18 +135,35 @@ const Result = () => {
   };
 
   return (
+    isLoggedIn &&
     <div className={classes.resultContainer}>
       <div className={classes.titleContainer}>
-        <Typography
-          className={classes.postTitle}
-        >{`${choices.count}명의 선택 결과`}</Typography>
+        <div color="primary" className={classes.postTitle}>
+          {`총 ${choicesData?.count || 'n'} 명의 선택 결과`}
+        </div>
       </div>
       <div className={classes.chartContainer}>
-        <DoughnutChart data={data} />
+        {
+          selectedChartType === 1 &&
+          <DoughnutChart data={data} options={doughnutOptions} />
+        }
+        {
+          selectedChartType === 2 &&
+          <BarChart data={data} options={barOptions} />
+        }
+      </div>
+      <h4 className={classes.chartTypeLabel}>차트 타입 선택</h4>
+      <div className={classes.chartTypesContainer}>
+        <Button type="button" variant="outlined" className={classes.chartTypeButton} onClick={() => setSelectedChartType(1)}>
+          도넛 차트
+        </Button>
+        <Button type="button" variant="outlined" className={classes.chartTypeButton} onClick={() => setSelectedChartType(2)}>
+          바 차트
+        </Button>
       </div>
       <div className={classes.buttonContainer}>
-        <Button type="button" variant="contained" color="primary" className={classes.button} onClick={handleRemoveChoice}>
-          선택 바꾸기
+        <Button variant="contained" color="primary" className={classes.button} onClick={handleRemoveChoice}>
+          내 선택 바꾸기
         </Button>
       </div>
     </div>
