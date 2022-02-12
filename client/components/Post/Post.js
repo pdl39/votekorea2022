@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { authenticate } from '../../store/kakaoAuth';
 import { fetchPost } from '../../store/post';
 import { fetchItems } from '../../store/items';
 import { submitChoice, fetchChoice } from '../../store/choice';
-import Grow from '@material-ui/core/Grow';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './PostStyle';
@@ -27,6 +25,7 @@ const Post = (props) => {
 	const auth = useSelector(state => state.kakaoAuth);
 	const post = useSelector(state => state.post);
 	const items = useSelector(state => state.items);
+	const choice = useSelector(state => state.choice);
 	const dispatch = useDispatch();
 
 	const [isFetchPostCalled, setIsFetchPostCalled] = useState(false);
@@ -37,8 +36,6 @@ const Post = (props) => {
 	// Login Check
 	useEffect(() => {
 		setIsLoggedIn(!!auth.user?.id);
-		// console.log(`${!!auth.user?.id}`);
-		console.log(`USER IS LOGGED IN - ${!!auth.user?.id} - FROM POST`);
 		return () => {};
 	}, [auth]);
 
@@ -94,6 +91,16 @@ const Post = (props) => {
 		}
 	}
 
+	const handleSeeResult = () => {
+		if (auth.user?.id) {
+			history.push(`/results/${postId}`);
+		}
+		else {
+			window.alert('결과를 보려면 로그인 해주세요');
+			history.push('/kakaologin');
+		}
+	}
+
 	const toggleSelection = (itemId, itemName) => {
 		if (selectedItemId === itemId) {
 			setSelectedItemId(null);
@@ -127,6 +134,12 @@ const Post = (props) => {
 				<Button type="button" variant="contained" color="primary" className={classes.button} onClick={() => handleSubmitChoice(selectedItemId)}>
 					선택 확인
 				</Button>
+				{
+					isLoggedIn && choice.id &&
+					<Button variant="contained" color="secondary" className={classes.button} onClick={handleSeeResult} >
+						결과 보기
+					</Button>
+				}
 			</div>
 		</div>
 	);

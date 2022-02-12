@@ -9,7 +9,6 @@ import BarChart from './Chartjs/BarChart';
 import useStyles from './ResultStyle';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Home from '../Home/Home';
 
 export const data = {
   title: `16,049 명의 선택 결과:`,
@@ -37,7 +36,6 @@ export const data = {
       borderWidth: 2,
       color: 'fff',
       hoverOffset: 10,
-      // minBarLength: 10,
     },
   ],
 };

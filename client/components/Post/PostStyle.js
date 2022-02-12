@@ -39,12 +39,14 @@ const useStyles = makeStyles(theme => ({
   buttonContainer: {
     height: '8%',
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
 	button: {
     width: '200px',
-		margin: theme.spacing(3, 0, 2),
+    margin: '5px',
+		// margin: theme.spacing(3, 0, 2),
 	},
 }));
 

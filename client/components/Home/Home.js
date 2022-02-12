@@ -46,10 +46,11 @@ const Home = () => {
       }
       else {
         const itemId = window.localStorage.getItem(PRECHOICE_ITEM_ID);
-        const itemResult = await dispatch(fetchItem(itemId));
-        console.log(itemResult);
-        if (itemResult && itemResult.id) {
-          window.alert(`내 선택: \n${itemResult.name}!`);
+        if (itemId) {
+          const itemResult = await dispatch(fetchItem(itemId));
+          if (itemResult && itemResult.id) {
+            window.alert(`내 선택: \n${itemResult.name}!`);
+          }
         }
       }
       // Remove pre-choice saved before logging in.

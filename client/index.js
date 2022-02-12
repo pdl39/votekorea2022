@@ -24,7 +24,7 @@ const darkTheme = createTheme({
 			light: '#444B4A',
 			mid: '#3C4341',
 			mix: '#28403A',
-			main: '#393a3a'
+			main: '#1C2523'
 		},
 		background: {
 			default: '#393a3a'
