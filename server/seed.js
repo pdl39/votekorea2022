@@ -1,9 +1,8 @@
-
 const {
 	db,
-	models: { User, Category, Post, Item },
+	models: { Category, Post, Item },
 } = require('./db');
-const { users, categories, posts, items } = require('./seedData');
+const { categories, posts, items } = require('./seedData');
 
 const seed = async () => {
 	try {
@@ -14,22 +13,11 @@ const seed = async () => {
       await db.sync({ force: true });
     }
 
-		const userInstances = [];
 		const categoryInstances = [];
 		const postInstances = [];
 		const itemInstances = [];
 
     // CREATE MODEL INSTANCES
-		//create users
-		for (const userInstance of users) {
-			try {
-				const newUserInstance = await User.create(userInstance);
-				userInstances.push(newUserInstance);
-			} catch (err) {
-				console.log(err);
-			}
-		}
-
 		//create categories
 		for (const categoryInstance of categories) {
 			try {

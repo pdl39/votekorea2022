@@ -1,19 +1,8 @@
-const users = [
-  {
-    kakaoUuid: '0000000000',
-    phoneNumber: '+82 10-0000-0000',
-    email: 'xxx@xxx.com',
-    nickname: 'angryChoco',
-    accountType: 'free'
-  }
-];
-
 const categories = [
   {
     name: '정치'
   }
 ];
-
 
 const posts = [
   {
@@ -74,7 +63,6 @@ const items = [
 ];
 
 module.exports = {
-  users,
   categories,
   posts,
   items,
