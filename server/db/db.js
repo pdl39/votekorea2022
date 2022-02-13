@@ -6,24 +6,24 @@ const dbName = process.env.RDS_DB_NAME || 'votekorea2022';
 const dbUsername = process.env.RDS_USERNAME || '';
 const dbPassword = process.env.RDS_PASSWORD || '';
 
-const DB_URL = `${protocol}://${dbUsername}:${dbPassword}@${dbHostName}/${dbName}`;
+// const DB_URL = `${protocol}://${dbUsername}:${dbPassword}@${dbHostName}/${dbName}`;
 
-// const config = {
-//   logging: false
-// };
+const config = {
+  logging: false
+};
 
 // if(process.env.LOGGING === 'true') {
 //   delete config.logging
 // }
 
-// if(process.env.DATABASE_URL){
-//   config.dialectOptions = {
-//     ssl: {
-//       rejectUnauthorized: false
-//     }
-//   };
-// }
+if(process.env.RDS_HOSTNAME) {
+  config.dialectOptions = {
+    ssl: {
+      rejectUnauthorized: false
+    }
+  };
+}
 
-const db = new Sequelize(DB_URL);
+const db = new Sequelize(process.env.RDS_CONNECTION_URL || `postgres://localhost:5432/votekorea2022`);
 
 module.exports = db;
