@@ -33,7 +33,7 @@ const KakaoLogin = (props) => {
 				<DialogContent className={classes.dialogContent}>
 					<a href={AUTH_URL} >
 						<div className={classes.kakaoLoginButton}>
-								<img src="https://votekorea2022-storage.s3.us-east-2.amazonaws.com/assets/images/third-party-assets/kakao_login_medium_narrow.png" alt="kakao login" className={classes.kakaoLoginImage} />
+								<img src="/assets/images/kakao/kakao_login_medium_narrow.png" alt="kakao login" className={classes.kakaoLoginImage} />
 						</div>
 					</a>
 					<DialogContentText id="alert-dialog-description" className={classes.cancel}>
