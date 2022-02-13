@@ -6,6 +6,7 @@ const dbName = process.env.RDS_DB_NAME || 'votekorea2022';
 const dbUsername = process.env.RDS_USERNAME || '';
 const dbPassword = process.env.RDS_PASSWORD || '';
 
+console.log('RDS_HOSTNAME: ', process.env.RDS_HOSTNAME);
 // const DB_URL = `${protocol}://${dbUsername}:${dbPassword}@${dbHostName}/${dbName}`;
 
 const config = {
