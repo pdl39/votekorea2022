@@ -78,7 +78,7 @@ const Post = (props) => {
 			}
 			else {
 				await dispatch(submitChoice(auth.user.id, postId, selectedItemId));
-				window.alert(`내 선택: \n${selectedItemName}!`);
+				window.alert(`${selectedItemName}!`);
 				history.push(`/results/${postId}`);
 			}
 		}

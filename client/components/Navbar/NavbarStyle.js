@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.primary.main,
 		display: 'flex',
 		justifyContent: 'space-between',
-		alignItems: 'center',
+		alignItems: 'space-around',
 		padding: '0.5rem',
 		height: '65px',
 		boxShadow: '0 4px 2px -2px rgba(0,0,0,.2)',
@@ -19,8 +19,11 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 	},
 	logo: {
-		height: '45px',
-    width: '100%',
+		maxHeight: '45px',
+    maxWidth: '150px',
+	},
+	logoPreload: {
+		display: 'none',
 	},
 	menuAndUserContainer: {
 		display: 'flex',
@@ -29,9 +32,13 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'flex-end'
 	},
 	userContainer: {
-		fontSize: 15
-	},
-	userContainer: {
+		fontSize: '11px',
+		[theme.breakpoints.down('300')]: {
+			fontSize: '8px'
+		},
+		[theme.breakpoints.down('250')]: {
+			display: 'none'
+		},
 		paddingRight: '0.5em',
 		color: theme.palette.secondary.white,
 	},

@@ -48,7 +48,7 @@ const Home = () => {
         if (itemId) {
           const itemResult = await dispatch(fetchItem(itemId));
           if (itemResult && itemResult.id) {
-            window.alert(`내 선택: \n${itemResult.name}!`);
+            window.alert(`${itemResult.name}!`);
           }
         }
       }
