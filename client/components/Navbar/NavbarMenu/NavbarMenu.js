@@ -67,7 +67,6 @@ const NavbarMenu = () => {
 					onClose={handleClose}
 				>
 					<StyledMenuItem>
-						{/* <ListItemText onClick={handleLogout} primary="로그아웃" /> */}
 						<div onClick={handleLogout} className={classes.menuItem}>
 							로그아웃
 						</div>

@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '10px',
     overflow: 'hidden',
     border: `1px solid ${theme.palette.secondary.light}`,
-    boxShadow: `5px 5px 10px ${theme.palette.secondary.main}`,
+    boxShadow: `3px 3px 5px ${theme.palette.secondary.main}`,
     [theme.breakpoints.down('300')]: {
       width: '80px'
     }
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '10px',
     overflow: 'hidden',
     border: `3px solid ${theme.palette.secondary.white}`,
-    boxShadow: `5px 5px 10px ${theme.palette.secondary.main}`,
+    boxShadow: `3px 3px 5px ${theme.palette.secondary.main}`,
     [theme.breakpoints.down('300')]: {
       width: '80px'
     }
@@ -51,12 +51,16 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: '80%',
+    width: '100%',
     overflow: 'hidden',
   },
   image: {
     top: '0',
     padding: '5px',
-    width: '95%'
+    width: '95%',
+  },
+  imagePreload: {
+    display: 'none'
   },
   nameContainer: {
     padding: '0',

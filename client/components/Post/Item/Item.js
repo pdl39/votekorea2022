@@ -12,11 +12,6 @@ const Item = (props) => {
     isSelected
   } = props;
 
-  const handleImageLoad = (bool) => {
-    console.log('set image loaded status: ', bool);
-    setImageLoaded(bool);
-  }
-
 	return (
     <div className={isSelected ? classes.itemSelected : classes.item}>
       <div className={classes.imageContainer}>
@@ -32,7 +27,7 @@ const Item = (props) => {
         }
         {
           item.imageUrl.length &&
-          <img src={item.imageUrl} onLoad={() => handleImageLoad(true)} className={imageLoaded ? classes.image : { display: 'none' }} alt={item.name} />
+          <img src={item.imageUrl} onLoad={() => setImageLoaded(true)} className={imageLoaded ? classes.image : classes.imagePreload} alt={item.name} />
         }
       </div>
       <div className={classes.nameContainer}>

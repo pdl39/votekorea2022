@@ -9,7 +9,7 @@ const StyledMenuItem = withStyles(theme => ({
 				color: theme.palette.primary.light,
 			},
 		},
-		height: '2em'
+		height: '1.5em'
 	},
 }))(MenuItem);
 

@@ -20,9 +20,10 @@ const useStyles = makeStyles(theme => ({
   postTitle: {
     textAlign: 'center',
     color: theme.palette.secondary.white,
-    borderRadius: '5px',
-    border: `1px solid ${theme.palette.primary.light}`,
-    width: '100%',
+    fontSize: '18px',
+    // borderRadius: '5px',
+    // border: `1px solid ${theme.palette.primary.light}`,
+    // width: '100%',
   },
   chartContainer: {
     minHeight: '60%',
@@ -45,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 13
   },
 	chartTypeButton: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
     color: 'white',
     width: 50,
     minSize: 45,

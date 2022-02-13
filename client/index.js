@@ -12,22 +12,22 @@ const darkTheme = createTheme({
 	palette: {
 		mode: 'dark',
 		primary: {
-			lighter: '#87BD92',
-			light: '#6c8a81',
-			main: '#406056',
-			dark: '#354c44',
+			lighter: '#ADE8F4',
+			light: '#23494B',
+			main: '#062635',
+			dark: '#012639',
 			darker: '#01392D',
 			mix: '#df6b78',
 		},
 		secondary: {
 			white: '#FFFFFF',
-			light: '#444B4A',
-			mid: '#3C4341',
-			mix: '#28403A',
-			main: '#1C2523'
+			light: '#44494B',
+			mid: '#3c4043',
+			main: '#293f49',
+			mix: '#283840',
 		},
 		background: {
-			default: '#393a3a'
+			default: '#1f2124'
 		}
 	}
 });
