@@ -24,6 +24,6 @@ if(process.env.RDS_HOSTNAME) {
   };
 }
 
-const db = new Sequelize(process.env.RDS_CONNECTION_URL || `postgres://localhost:5432/votekorea2022`);
+const db = new Sequelize(process.env.RDS_CONNECTION_URL || `postgres://localhost:5432/votekorea2022`, config);
 
 module.exports = db;
