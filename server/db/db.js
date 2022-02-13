@@ -1,30 +1,21 @@
 const Sequelize = require('sequelize');
 
-const protocol = 'postgres';
-const dbHostName = process.env.RDS_HOSTNAME || `localhost:5432`;
+const dbHost = process.env.RDS_HOSTNAME || `localhost:5432`;
 const dbName = process.env.RDS_DB_NAME || 'votekorea2022';
-const dbUsername = process.env.RDS_USERNAME || '';
+const dbPort = process.env.RDS_PORT || 5432;
+const dbUser = process.env.RDS_USERNAME || '';
 const dbPassword = process.env.RDS_PASSWORD || '';
 
-console.log('RDS_HOSTNAME: ', process.env.RDS_HOSTNAME);
-// const DB_URL = `${protocol}://${dbUsername}:${dbPassword}@${dbHostName}/${dbName}`;
-
 const config = {
-  logging: false
+  host: dbHost,
+  port: dbPort,
+  logging: console.log,
+  maxConcurrentQueries: 100,
+  dialect: 'postgres',
+  pool: { maxConnections: 5, maxIdleTime: 30},
+  language: 'en'
 };
 
-// if(process.env.LOGGING === 'true') {
-//   delete config.logging
-// }
-
-if(process.env.RDS_HOSTNAME) {
-  config.dialectOptions = {
-    ssl: {
-      rejectUnauthorized: false
-    }
-  };
-}
-
-const db = new Sequelize(process.env.RDS_CONNECTION_URL || `postgres://localhost:5432/votekorea2022`, config);
+const db = new Sequelize(dbName, dbUser, dbPassword, config);
 
 module.exports = db;
