@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: '10px'
   },
 	kakaoLoginButton: {
-    width: '200px',
+    width: '175px',
     minWidth: '150px',
     overflow: 'hidden'
   },
