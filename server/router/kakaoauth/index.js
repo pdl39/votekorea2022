@@ -3,7 +3,7 @@ const { newErr, runCommand } = require('../../utils');
 const User = require('../../db/models/User');
 const Choice = require('../../db/models/Choice');
 const registerUser = require('./registerUser');
-const { REDIRECT_URI, CLIENT_ID, CLIENT_SECRET } = process.env;
+const { KAKAO_REDIRECT_URI, KAKAO_CLIENT_ID, KAKAO_CLIENT_SECRET } = process.env;
 const kakaoApiUrlGetToken = 'https://kauth.kakao.com/oauth/token';
 const kakaoApiUrlGetUserInfo = 'https://kapi.kakao.com/v2/user/me';
 const kakaoApiUrlGetTokenInfo = 'https://kapi.kakao.com/v1/user/access_token_info';
@@ -15,9 +15,9 @@ router.post('/login', async (req, res, next) => {
 		const kakaoTokens = await runCommand(`curl POST ${kakaoApiUrlGetToken} \
 		-H "Content-Type: application/x-www-form-urlencoded" \
 		-d "grant_type=authorization_code" \
-		-d "client_id=${CLIENT_ID}" \
-		-d "client_secret=${CLIENT_SECRET}" \
-		--data-urlencode "redirect_uri=${REDIRECT_URI}" \
+		-d "client_id=${KAKAO_CLIENT_ID}" \
+		-d "client_secret=${KAKAO_CLIENT_SECRET}" \
+		--data-urlencode "redirect_uri=${KAKAO_REDIRECT_URI}" \
 		-d "code=${req.body.code}"`);
 		console.log('KAKAO_TOKENS: ', kakaoTokens);
 
@@ -136,8 +136,8 @@ router.post('/authenticate', async (req, res, next) => {
 				const newKakaoTokens = await runCommand(`curl POST ${kakaoApiUrlGetToken} \
 				-H "Content-Type: application/x-www-form-urlencoded" \
 				-d "grant_type=refresh_token" \
-				-d "client_id=${CLIENT_ID}" \
-				-d "client_secret=${CLIENT_SECRET}" \
+				-d "client_id=${KAKAO_CLIENT_ID}" \
+				-d "client_secret=${KAKAO_CLIENT_SECRET}" \
 				-d "refresh_token=${req.body.refreshToken}"`);
 				console.log('NEW_KAKAO_TOKENS: ', newKakaoTokens);
 				const parsedNewKakaoTokens = JSON.parse(newKakaoTokens);
