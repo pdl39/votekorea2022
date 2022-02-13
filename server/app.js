@@ -14,8 +14,6 @@ app.use(express.urlencoded({ extended: false }));
 // Add your routes here and uncomment. For example:
 app.use('/api', require('./router/api'));
 app.use('/kakaoauth', require('./router/kakaoauth'));
-// ...
-// */
 
 app.get('/', (req, res, next) => {
   try {
@@ -47,7 +45,7 @@ app.get('*', (req, res, next) => {
     const indexHtml = path.resolve(appDir, 'dist/index.html');
     const fallbackHtml = path.resolve(appDir, 'src/fallback.html');
 
-    if (indexHtmlPath) {
+    if (indexHtml) {
       res.sendFile(indexHtml);
     }
     else {
