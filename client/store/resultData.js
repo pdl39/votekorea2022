@@ -16,7 +16,6 @@ export const fetchResultData = postId => {
   return async dispatch => {
     try {
       const { data: resultData } = await axios.get(`/api/result_data/${postId}`);
-      console.log('FETCHED RESULT DATA: ', resultData);
 
       dispatch(_fetchResultData(resultData));
       return resultData;

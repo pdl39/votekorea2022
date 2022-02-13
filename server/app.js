@@ -4,7 +4,6 @@ const logger = require('morgan')('dev');
 const app = express();
 const appDir = require('fs').realpathSync(process.cwd());
 
-console.log('Project root directory: ', appDir);
 
 // MIDDLEWARES
 app.use(logger); // logging

@@ -18,7 +18,6 @@ const Routes = () => {
 	useEffect(async () => {
     const result = await dispatch(authenticate());
     setIsLoggedIn(result && !!result.user?.id);
-		console.log('authentication dispatch was run');
 	}, []);
 
 	return (

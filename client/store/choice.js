@@ -34,7 +34,6 @@ const _removeChoice = choice => {
 // Thunks
 export const fetchChoice = (userId, postId) => {
   return async dispatch => {
-    console.log('inside fetchChoice dispatch. userId: ', userId);
     try {
       const { data: choice } = await axios.get(`/api/choices/?userId=${userId}&postId=${postId}`);
 
@@ -72,7 +71,6 @@ export const submitChoice = (userId, postId, itemId) => {
 };
 
 export const removeChoice = (userId, postId) => {
-  console.log({userId, postId});
   return async dispatch => {
     try {
       const { data } = await axios.delete(`/api/choices/?userId=${userId}&postId=${postId}`);

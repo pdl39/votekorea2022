@@ -23,7 +23,6 @@ const Home = () => {
 	// Login Check
 	useEffect(() => {
     setIsLoggedIn(!!auth.user?.id);
-    console.log('USER IS LOGGED IN! - FROM HOME');
 		return () => {};
 	}, [auth]);
 
@@ -62,7 +61,6 @@ const Home = () => {
   }, [authCode]);
 
   const handleLoginError = () => {
-    console.log(auth.err);
     const errorStatus = auth.err.response.status;
     const errorStatusText = auth.err.response.statusText;
     const errorMessage = auth.err.response.data;

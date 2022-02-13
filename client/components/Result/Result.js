@@ -59,7 +59,6 @@ const Result = () => {
   const handleRemoveChoice = async () => {
     if (isLoggedIn && postId) {
       const result = await dispatch(removeChoice(auth.user?.id, postId));
-      console.log(result);
       if (result.err) {
         window.alert(`선택 초기화에 실패하였습니다. 잠시후에 다시 시도해주세요.`);
         return;

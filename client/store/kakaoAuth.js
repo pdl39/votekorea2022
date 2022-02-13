@@ -58,14 +58,12 @@ export const login = (code) => { // every kakao api call is done server side (1.
 
 			// Remove authcode from localStorage after successfully logging in.
 			window.localStorage.removeItem(KAKAO_AUTH_CODE);
-			console.log({kakaoAuth});
 
 			dispatch(_setAuth(kakaoAuth));
 			return kakaoAuth;
 		}
 		catch (err) {
 			window.localStorage.removeItem(KAKAO_AUTH_CODE);
-			console.log(({err}))
 			dispatch(_setAuth({ err }));
 			return { err };
 		}
@@ -114,7 +112,6 @@ export const authenticate = () => {
 			return kakaoAuth;
 		}
 		catch (err) {
-			console.log({err});
 			dispatch(_setAuth({}));
 			return { err };
 		}
@@ -126,8 +123,6 @@ export const logout = () => {
 	window.localStorage.removeItem(REFRESH_TOKEN);
 	window.localStorage.removeItem(EXPIRES_IN);
 	window.localStorage.removeItem(REFRESH_TOKEN_EXPIRES_IN);
-
-	console.log('logout dispatch called');
 
 	return {
 		type: LOGOUT,

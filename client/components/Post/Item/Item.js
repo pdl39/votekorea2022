@@ -13,7 +13,6 @@ const Item = (props) => {
   } = props;
 
   const handleImageLoad = (bool) => {
-    console.log('set image loaded status: ', bool);
     setImageLoaded(bool);
   }
 

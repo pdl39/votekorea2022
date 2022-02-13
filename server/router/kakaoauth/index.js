@@ -53,12 +53,12 @@ router.post('/login', async (req, res, next) => {
 				if (req.body.postId && req.body.chosenItemId) {
 					try {
 						// FIRST SEE IF A CHOICE ALREADY EXISTS:
-							const choice = await Choice.findOne({
-								where: {
-									userId: user.id,
-									postId: req.body.postId
-								}
-							});
+						const choice = await Choice.findOne({
+							where: {
+								userId: user.id,
+								postId: req.body.postId
+							}
+						});
 						if (!choice) { // If a choice doesn't exist, create choice and send back normal response.
 							await Choice.create({
 								chosenItemId: req.body.chosenItemId,
@@ -68,12 +68,6 @@ router.post('/login', async (req, res, next) => {
 							res.send({ kakaoTokens, user });
 						}
 						else { // If choice already exists, add choice
-							console.log({
-								kakaoTokens,
-								user,
-								choice
-							});
-							// user = JSON.stringify(user);
 							res.send({ kakaoTokens, user, choice });
 						}
 					}
